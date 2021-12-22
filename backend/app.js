@@ -14,20 +14,12 @@ app.use(cors());
 app.use(helmet());
 app.use(limiter);
 
-const usersRoute = require('./routes/userRoute');
-/*const messagesRoute = require('./routes/messagesRoute');
-const commentsRoute = require('./routes/commentRoute');*/
+const userRoutes = require('./routes/users');
+const messageRoutes =  require('./routes/messages');
+const commentRoutes = require('./routes/comments');
 
-app.use((req, res, next) => {
-    console.log('Test !');
-    })
-
-app.use('/images', express.static(path.join(__dirname, 'images')));
-
-app.use('/api/auth', usersRoute);
-/*app.use('/api/messages', messagesRoute);
-app.use('/api/comments', commentsRoute);*/
-
-
+app.use('/api/users', userRoutes);
+app.use('/api/messages', messageRoutes);
+app.use('/api/comments', commentRoutes);
 
 module.exports = app;

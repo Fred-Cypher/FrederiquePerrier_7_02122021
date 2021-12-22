@@ -14,11 +14,10 @@ model User {
     id Int @id @default(autoincrement())
     first_name String 
     last_name String 
-    alias String @unique
     email String @unique
     password String 
     is_admin Boolean @default(false)
-    posts Message[]
+    message Message[]
     comment Comment[]
 }
 
@@ -40,6 +39,7 @@ model Comment {
     user_id Int
     image_post Message @relation(fields: [image_id], references: [id])
     image_id Int
+    commentary String
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 }
