@@ -17,12 +17,12 @@ exports.allUsers = async(req, res, next) => {
     res.json(users)
 };
 
-// Enregistrement d'un utilisateur avec hash : FONCTIONNE 
+// Enregistrement d'un utilisateur avec hash  
 
 exports.signup = async(req, res, next) => {
     const userExists = await prisma.user.findUnique({
         where: {
-            email: 'email@mail.com2' 
+            email: 'email@mail.com2' // req.body.email
         },
         select: {
             email: true
@@ -33,13 +33,13 @@ exports.signup = async(req, res, next) => {
         return res.status(400).json({ message : 'Cet email existe déjà dans la base de données.'})
     }
 
-    const hash = await bcrypt.hash('motdepasse2', 10);
+    const hash = await bcrypt.hash('motdepasse2', 10);  // req.body.password
 
     const newUser = await prisma.user.create({
         data: {
-            first_name: 'Prénom2',
-            last_name: 'Nom2',
-            email: 'email@mail.com2',
+            first_name: 'Prénom2', // req.body.first_name
+            last_name: 'Nom2', // req.body.last_name
+            email: 'email@mail.com2', // req.body.email
             password: hash,
         },
     })
@@ -95,7 +95,7 @@ exports.delete = async(req, res, next) => {
 
     const deleteUSer = await prisma.user.delete({
         where: {
-            id: 2
+            id: 2 // req.params.id
         },
     })
     res.json(deleteUSer)
@@ -109,7 +109,7 @@ exports.modifyUser = async(req, res, next) => {
             id: 5 // req.params.id
         },
         select: {
-            password: true //req.params.password
+            password: true 
         }
     })
 
@@ -117,7 +117,7 @@ exports.modifyUser = async(req, res, next) => {
         return res.status(400).json({ message : 'Cet utilisateur n\'existe pas dans la base de données'})
     }
 
-    const hash = await bcrypt.hash('password', 10);
+    const hash = await bcrypt.hash('password', 10); // req.body.password
 
     const newPassword = await prisma.user.update({
         where: {

@@ -14,7 +14,7 @@ exports.createComment = async(req, res, next) => {
             },
             image_post: {
                 connect: {
-                    id: 4//image_id
+                    id: 4 //image_id
                 }
             }
         }
@@ -22,7 +22,7 @@ exports.createComment = async(req, res, next) => {
     res.json(newComment)
 };
 
-// Afficher tous les commentaires d'un message FONCTIONNE PAS
+// Afficher tous les commentaires d'un message 
 
 exports.getCommentsByMessage = async(req, res, next) => {
     const messageComments = await prisma.comment.findMany({
@@ -36,7 +36,7 @@ exports.getCommentsByMessage = async(req, res, next) => {
     res.json(messageComments)
 };
 
-// Afficher les commentaires d'un seul utilisateur FONCTIONNE PAS
+// Afficher les commentaires d'un seul utilisateur 
 
 exports.getCommentsByUser = async(req, res, next) => {
     const userComments = await prisma.comment.findMany({
@@ -55,7 +55,7 @@ exports.getCommentsByUser = async(req, res, next) => {
 exports.getOneComment = async(req, res, next) => {
     const oneComment = await prisma.comment.findUnique({
         where: {
-            id: 5//req.params.id
+            id: 5 //req.params.id
         }
     })
     res.json(oneComment)

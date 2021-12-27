@@ -24,7 +24,7 @@ exports.getAllMessages = async(req, res, next) => {
 exports.getOneMessage = async(req, res, next) => {
     const oneMessage = await prisma.message.findUnique({
         where: {
-            id : 1
+            id : 1 //req.params.id
         }
     })
     res.json(oneMessage)
@@ -35,7 +35,7 @@ exports.getOneMessage = async(req, res, next) => {
 exports.getMessageByUser = async(req, res, next) => {
     const userMessages = await prisma.message.findMany({
         where: {
-            user_id : 5
+            user_id : 5 // req.params.id
         }, select:{
             title: true,
             created_at: true,
@@ -99,7 +99,7 @@ exports.modifyMessage = async(req, res, next) => {
 exports.deleteMessage = async(req, res, next) => {
     const messageExists = await prisma.message.findUnique({
         where: {
-            id: 2
+            id: 2 // req.params.id
         },
         select: {
             id: true
@@ -112,7 +112,7 @@ exports.deleteMessage = async(req, res, next) => {
 
     const deleteOneMessage = await prisma.message.delete({
         where: {
-            id: 2
+            id: 2 // req.params.id
         }
     })
     res.json(deleteOneMessage)
