@@ -4,7 +4,7 @@ const cors = require('cors');
 const path = require('path');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
-const limiter = rateLimit({ windows : 15 * 60 * 1000, max: 200});
+const limiter = rateLimit({ windows : 15 * 60 * 1000, max: 200 });
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
@@ -17,6 +17,8 @@ app.use(limiter);
 const userRoutes = require('./routes/users');
 const messageRoutes =  require('./routes/messages');
 const commentRoutes = require('./routes/comments');
+
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.use('/api/users', userRoutes);
 app.use('/api/messages', messageRoutes);
