@@ -22,7 +22,7 @@ exports.allUsers = async(req, res, next) => {
 exports.signup = async(req, res, next) => {
     const userExists = await prisma.user.findUnique({
         where: {
-            email: 'email@mail.com2' // req.body.email
+            email: req.body.email // 'email@mail.com2'
         },
         select: {
             email: true
@@ -33,13 +33,13 @@ exports.signup = async(req, res, next) => {
         return res.status(400).json({ message : 'Cet email existe déjà dans la base de données.'})
     }
 
-    const hash = await bcrypt.hash('motdepasse2', 10);  // req.body.password
+    const hash = await bcrypt.hash(req.body.password, 10);  // 'motdepasse2'
 
     const newUser = await prisma.user.create({
         data: {
-            first_name: 'Prénom2', // req.body.first_name
-            last_name: 'Nom2', // req.body.last_name
-            email: 'email@mail.com2', // req.body.email
+            first_name: req.body.first_name, // 'Prénom2'
+            last_name: req.body.last_name, // 'Nom2'
+            email: req.body.email, // 'email@mail.com2'
             password: hash,
         },
     })
@@ -51,7 +51,7 @@ exports.signup = async(req, res, next) => {
 exports.login = async function login(req, res, next){
     const userExists = await prisma.user.findUnique({
         where: {
-            email: 'email@mail.com2' //req.body.email
+            email: req.body.email //'email@mail.com2' 
         },
         select: {
             email: true
@@ -62,16 +62,16 @@ exports.login = async function login(req, res, next){
         return res.status(400).json({ message : 'Cet utilisateur n\'existe pas.'})
     }
 
-    const valid = await bcrypt.compare('motdepasse2', '$2b$10$GLW/ngDIDJGihzzwSMRz/eeev4gk4oSLmUh32ylLIGK/EokfGnPvG') //(req.body.password, user.password)
+    const valid = await bcrypt.compare(req.body.password, user.password) //('motdepasse2', '$2b$10$GLW/ngDIDJGihzzwSMRz/eeev4gk4oSLmUh32ylLIGK/EokfGnPvG')
 
     if(!valid){
         return res.status(401).json({ error: 'Mot de passe incorrect' });
     }
 
     res.status(200).json({
-        userId: 5, //user.id
+        userId: user.id, // 5
         token: jwt.sign(
-            { userId: 5 }, //user.id
+            { userId: user.id }, // 5
             process.env.TOKEN, 
             { expiresIn: '24h' }
         )
@@ -83,7 +83,7 @@ exports.login = async function login(req, res, next){
 exports.delete = async(req, res, next) => {
     const userExists = await prisma.user.findUnique({
         where: {
-            id: 2 // req.params.id
+            id: req.params.id // 2
         },
         select: {
             id: true
@@ -95,7 +95,7 @@ exports.delete = async(req, res, next) => {
 
     const deleteUSer = await prisma.user.delete({
         where: {
-            id: 2 // req.params.id
+            id: req.params.id // 2
         },
     })
     res.json(deleteUSer)
@@ -106,7 +106,7 @@ exports.delete = async(req, res, next) => {
 exports.modifyUser = async(req, res, next) => {
     const userExists = await prisma.user.findUnique({
         where: {
-            id: 5 // req.params.id
+            id: req.params.id // 5
         },
         select: {
             password: true 
@@ -117,11 +117,11 @@ exports.modifyUser = async(req, res, next) => {
         return res.status(400).json({ message : 'Cet utilisateur n\'existe pas dans la base de données'})
     }
 
-    const hash = await bcrypt.hash('password', 10); // req.body.password
+    const hash = await bcrypt.hash(req.body.password, 10); // 'password'
 
     const newPassword = await prisma.user.update({
         where: {
-            id: 5 //req.params.id
+            id: req.params.id  // 5
         },
         data: {
             password: hash
