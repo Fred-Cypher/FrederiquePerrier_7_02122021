@@ -24,7 +24,7 @@ exports.getAllMessages = async(req, res, next) => {
 exports.getOneMessage = async(req, res, next) => {
     const oneMessage = await prisma.message.findUnique({
         where: {
-            id : 1 //req.params.id
+            id : req.params.id // 1 
         }
     })
     res.json(oneMessage)
@@ -35,7 +35,7 @@ exports.getOneMessage = async(req, res, next) => {
 exports.getMessageByUser = async(req, res, next) => {
     const userMessages = await prisma.message.findMany({
         where: {
-            user_id : 5 // req.params.id
+            user_id : req.params.id // 5
         }, select:{
             title: true,
             created_at: true,
@@ -51,13 +51,12 @@ exports.getMessageByUser = async(req, res, next) => {
 exports.createMessage = async(req, res, next) => {
     const newMessage = await prisma.message.create({
         data: {
-            title: 'Message Marie',
-            image_url: 'lien image Marie',
-            //${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-            description: 'Description Marie',
+            title: req.body.title, //'Message Marie',
+            image_url: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+            description: req.boby.description, //'Description Marie',
             user: {
                 connect: {
-                    id: 3
+                    id: user_id //3
                 }
             }
         }
@@ -71,7 +70,7 @@ exports.createMessage = async(req, res, next) => {
 exports.modifyMessage = async(req, res, next) => {
     const messageExists = await prisma.message.findUnique({
         where: {
-            id: 1 //req.params.id
+            id: req.params.id // 1
         },
         select: {
             id: true
@@ -84,11 +83,11 @@ exports.modifyMessage = async(req, res, next) => {
 
     const changeMessage = await prisma.message.update({
         where: {
-            id: 1 //req.params.id
+            id: req.params.id  // 1
         },
         data: {
-            title: 'Changement titre', //req.body.title
-            description: 'Changement description' //req.boby.descrition
+            title: req.body.title, // 'Changement titre'
+            description: req.boby.description // 'Changement description' 
         }
     })
     res.json(changeMessage)
@@ -99,7 +98,7 @@ exports.modifyMessage = async(req, res, next) => {
 exports.deleteMessage = async(req, res, next) => {
     const messageExists = await prisma.message.findUnique({
         where: {
-            id: 2 // req.params.id
+            id: req.params.id // 2
         },
         select: {
             id: true
@@ -112,7 +111,7 @@ exports.deleteMessage = async(req, res, next) => {
 
     const deleteOneMessage = await prisma.message.delete({
         where: {
-            id: 2 // req.params.id
+            id: req.params.id // 2
         }
     })
     res.json(deleteOneMessage)
