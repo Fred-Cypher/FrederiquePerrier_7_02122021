@@ -20,9 +20,12 @@ exports.allUsers = async(req, res, next) => {
 // Enregistrement d'un utilisateur avec hash  
 
 exports.signup = async(req, res, next) => {
+
+    const { first_name, last_name, email, password} = req.body;
+
     const userExists = await prisma.user.findUnique({
         where: {
-            email: req.body.email // 'email@mail.com2'
+            email // 'email@mail.com2'
         },
         select: {
             email: true
@@ -33,18 +36,20 @@ exports.signup = async(req, res, next) => {
         return res.status(400).json({ message : 'Cet email existe déjà dans la base de données.'})
     }
 
-    const hash = await bcrypt.hash(req.body.password, 10);  // 'motdepasse2'
+    const hash = await bcrypt.hash(password, 10);  // 'motdepasse2'
 
     const newUser = await prisma.user.create({
         data: {
-            first_name: req.body.first_name, // 'Prénom2'
-            last_name: req.body.last_name, // 'Nom2'
-            email: req.body.email, // 'email@mail.com2'
+            first_name, // 'Prénom2'
+            last_name, // 'Nom2'
+            email, // 'email@mail.com2'
             password: hash,
         },
     })
     res.json(newUser)
+    .catch()
 };
+
 
 // Connection d'un utilisateur 
 

@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import Header from "./Header";
 import Login from "./Login";
+import '../style/signup.css';
 
 const Signup= () =>{
     const initialsValues = { firstName: '', lastName: '', email: '', password: '', verifPassword: ''};
@@ -22,11 +23,11 @@ const Signup= () =>{
     }
 
     useEffect(() => {
-        console.log(formErrors);
+        console.log(formErrors)
         if (Object.keys(formErrors).length === 0 && isSubmit) {
         console.log(formValues);
         }
-    }, [formErrors]);
+    }, [formErrors, formValues, isSubmit]);
 
     const validate = (values) => {
         const errors = {};
@@ -37,27 +38,27 @@ const Signup= () =>{
         const passwordRegex = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$');
 
         if(!values.firstName){
-            errors.firstName = 'Le prénom est obligatoire'
+            errors.firstName = '❌ Le prénom est obligatoire'
         } else if (!firstNameRegex.test(values.firstName.trim())){
-            errors.firstName = 'Le prénom ne doit comporter que des lettres (espaces, tirets et apostrophes autorisés)'
+            errors.firstName = '❌ Le prénom ne doit comporter que des lettres (espaces, tirets et apostrophes autorisés)'
         }
         if(!values.lastName){
-            errors.lastName = 'Le nom est obligatoire'
+            errors.lastName = '❌ Le nom est obligatoire'
         } else if (!lastNameRegex.test(values.lastName.trim())){
-            errors.lastName = 'Le nom ne doit comporter que des lettres (espaces, tirets et apostrophes autorisés)'
+            errors.lastName = '❌ Le nom ne doit comporter que des lettres (espaces, tirets et apostrophes autorisés)'
         }
         if(!values.email){
-            errors.email = 'L\'adresse mail est obligatoire'
+            errors.email = '❌ L\'adresse mail est obligatoire'
         } else if (!emailRegex.test(values.email.trim())){
-            errors.email = 'Veuillez entrer une adresse mail valide'
+            errors.email = '❌ Veuillez entrer une adresse mail valide'
         }
         if(!values.password){
-            errors.password= 'Le mot de passe est obligatoire'
+            errors.password= '❌ Le mot de passe est obligatoire'
         } else if (!passwordRegex.test(values.password.trim())){
-            errors.password = 'Le mot de passe doit comporter au minimum 8 caractères dont une majucule, une minuscule, un chiffre et un caractère spécial'
+            errors.password = '❌ Le mot de passe doit comporter au minimum 8 caractères dont une majucule, une minuscule, un chiffre et un caractère spécial'
         }
         if(values.password !== values.verifPassword){
-            errors.verifPassword = 'Mots de passe différents, réessayez.'
+            errors.verifPassword = '❌ Mots de passe différents, réessayez.'
         }
         return errors;    
     }
@@ -78,6 +79,7 @@ const Signup= () =>{
             }
         }
 
+
         fetch('http://localhost:5500/api/auth/signup', fetchData)
             .then(response => response.json())
             .then(() => {
@@ -86,7 +88,7 @@ const Signup= () =>{
             })
             //.catch(error => res.status(500).json({ error : 'Problème lors de l\'enregistrement, veuillez recommencer votre inscription.' }))
         
-    }
+    };
 
     return(
         <>
@@ -105,7 +107,7 @@ const Signup= () =>{
                             <div className="form-group">
                                 <label htmlFor='firstName' className="form-label">Prénom : </label>
                                 <input type='text' name='firstName' id='firstName' className="form-control" onChange={ handleChange} value= { formValues.firstName } /> 
-                                <small className="small">{formErrors.firstName}</small>
+                                <small className="small ">{formErrors.firstName}</small>
                             </div>
                             <div className="form-group">
                                 <label htmlFor='lastName' className="form-label">Nom : </label>
