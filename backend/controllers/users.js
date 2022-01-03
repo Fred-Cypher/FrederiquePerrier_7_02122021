@@ -5,49 +5,53 @@ const jwt = require('jsonwebtoken'); // Permet de créer et de vérifier un toke
 
 // Récupération de tous les utilisateurs
 
-exports.allUsers = async(req, res, next) => {
-    let users = await prisma.user.findMany({
-        select: {
-            first_name: true,
-            last_name: true,
-            email: true,
-            password: true,
-        }
-    })
-    res.json(users)
+exports.allUsers = async function allUser(req, res, next){
+    const allUsers = await prisma.user.findMany()
+    res.send(JSON.stringify({"status": 200, "error": null, 'response': allUsers}));
 };
 
 // Enregistrement d'un utilisateur avec hash  
 
-exports.signup = async(req, res, next) => {
+exports.signup = async function signup(req, res, next){
+    try
+    {
+        const user = await prisma.user.findUnique({
+            where: { 
+                email: req.body.email 
+            }
+        })
+        console.log('user:', user);
 
-    const { first_name, last_name, email, password} = req.body;
-
-    const userExists = await prisma.user.findUnique({
-        where: {
-            email // 'email@mail.com2'
-        },
-        select: {
-            email: true
+        if(user)
+        {
+            res.send(JSON.stringify({'status': 302, "error": 'Cet email existe déjà dans la base de données'}));
+            return;
+        } else {
+            let passwordHash = bcrypt.hash(req.body.password, 10);
+            try 
+            {
+                console.log('password:', passwordHash);
+                const user = await prisma.user.create({
+                    data: {
+                        first_name: req.body.firstName,
+                        last_name: req.body.lastName,
+                        email: req.body.email,
+                        password: passwordHash
+                    }
+                })
+                res.send(JSON.stringify({'status': 200, 'error': null, 'response': user.id}));
+            }
+            catch(e)
+            {
+                res.send(JSON.stringify({'status': 500, 'error': 'In create user '+e, 'response': null}));
+            }
         }
-    })
-
-    if(userExists){
-        return res.status(400).json({ message : 'Cet email existe déjà dans la base de données.'})
+        
     }
-
-    const hash = await bcrypt.hash(password, 10);  // 'motdepasse2'
-
-    const newUser = await prisma.user.create({
-        data: {
-            first_name, // 'Prénom2'
-            last_name, // 'Nom2'
-            email, // 'email@mail.com2'
-            password: hash,
-        },
-    })
-    res.json(newUser)
-    .catch()
+    catch(e)
+        {
+            res.send(JSON.stringify({'status': 501, 'error': 'In user '+e, 'response': null}));
+        }
 };
 
 
