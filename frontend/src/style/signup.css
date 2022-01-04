@@ -1,4 +1,24 @@
-small{
+/*small{
     color: #F92F60;
     font-weight: 500;
+}*/
+
+/*.textSuccess{
+    color: #00D26A;
+    font-weight: 500;
+    
 }
+
+.borderSuccess{
+    border-color: #00D26A;
+}
+
+.textInvalid{
+    color: #F8312F;
+    font-weight: 500;
+    
+}
+
+.borderInvalid{
+    border-color: #F8312F;
+}*/
