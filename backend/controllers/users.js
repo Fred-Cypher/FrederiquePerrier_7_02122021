@@ -43,10 +43,11 @@ exports.signup = async function signup(req, res, next){
 exports.login = async function login(req, res, next){
     const user = await prisma.user.findUnique({
         where: {
-            email: req.body.email //'email@mail.com2' 
+            email: String(req.body.email) //'email@mail.com2' 
         },
         select: {
-            email: true
+            email: true,
+            password: true
         }
     })
 

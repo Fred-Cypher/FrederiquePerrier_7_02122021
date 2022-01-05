@@ -129,7 +129,7 @@ const Signup = () => {
                                 <div className="form-group">
                                     <label htmlFor='firstName' className="form-label">Prénom : </label>
                                     <input type='text' name='firstName' id='firstName' className="form-control" onChange={(e) => setFirstName(e.target.value)} value= { firstName } /> 
-                                    <small className="small "></small>
+                                    <small className="small"></small>
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor='lastName' className="form-label">Nom : </label>
