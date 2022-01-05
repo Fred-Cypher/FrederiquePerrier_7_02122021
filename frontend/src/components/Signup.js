@@ -15,8 +15,10 @@ const Signup = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Fonction de vérification d'un champ du fomulaire avec un regex
-        const isValidInput = function (inputField, inputValue, regex, invalidMessage) {
+
+        // Fonction générale pour valider les input
+
+        const validInput = function (inputField, inputValue, regex, invalidMessage) {
             const small = inputField.nextElementSibling;
 
             if (regex.test(inputValue)) {
@@ -34,37 +36,41 @@ const Signup = () => {
             }
         };
 
-        // Création de l'input , du regex et du message d'erreur pour chaque champs du formulaire
-        
+        // Préparation de la validation du prénom         
         const firstNameRegex = new RegExp('^[A-Za-zÀ-ÖØ-öø-ÿ-\' ]+$', 'g');
         const firstNameInput = document.getElementById('firstName');
         const firstNameInvalid = '⛔ Le prénom ne doit comporter que des lettres (espace, tiret et apostrophe autorisés)';
 
+        // Préparation de la validation du nom
         const lastNameRegex = new RegExp("^([A-Za-z]+)[' -]?([A-Za-z]+)$", "g");
         const lastNameInput = document.getElementById('lastName');
         const lastNameInvalid = '⛔ Le nom ne doit comporter que des lettres (espace, tiret et apostrophe autorisés)';
 
+        // Préparation de la validation de l'adresse mail
         const emailRegex = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,5}$', 'g');
         const emailInput = document.getElementById('email');
         const emailInvalid = '⛔ Veuillez entrer une adresse mail valide';
 
+        // Préparation de la validation du mot de passe
         const passwordRegex = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$', 'g')
         const passwordInput = document.getElementById('password');
         const passwordInvalid= '⛔ Le mot de passe doit comporter au minimum 8 caractères dont une majucule, une minuscule, un chiffre et un caractère spécial';
 
- 
-        let validFirstName = isValidInput(firstNameInput, firstName, firstNameRegex, firstNameInvalid);
-        let validLastName = isValidInput(lastNameInput, lastName, lastNameRegex, lastNameInvalid);
-        let validEmail = isValidInput(emailInput, email, emailRegex, emailInvalid);
-        let validpassword = isValidInput(passwordInput, password, passwordRegex, passwordInvalid);
+        // Validation des différents champs du formulaire
+        const validFirstName = validInput(firstNameInput, firstName, firstNameRegex, firstNameInvalid);
+        const validLastName = validInput(lastNameInput, lastName, lastNameRegex, lastNameInvalid);
+        const validEmail = validInput(emailInput, email, emailRegex, emailInvalid);
+        const validpassword = validInput(passwordInput, password, passwordRegex, passwordInvalid);
 
         console.log(validFirstName);
         console.log(validLastName);
         console.log(validEmail);
         console.log(validpassword);
 
+        // Validation du formulaire
         if (validFirstName && validLastName && validEmail && validpassword) {
             const verifPassword = document.getElementById('verifPassword');
+            // Vérification du mot de passe 
             if (password !== checkPassword) {
                 verifPassword.nextElementSibling.innerHTML = '⛔ Mots de passe différents, réessayez.';
                 verifPassword.nextElementSibling.classList.remove('text-success');
@@ -104,7 +110,7 @@ const Signup = () => {
         }
     }
 
-
+    // Renvoi vers la page de Login et formulaire d'inscription
 
     return (
             <>
@@ -151,10 +157,8 @@ const Signup = () => {
                             </form>
                         </div>
                     </div>
-                    
                 </div>
                 )}
-                
             </>
         )
 };

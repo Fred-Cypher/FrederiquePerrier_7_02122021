@@ -41,7 +41,7 @@ exports.signup = async function signup(req, res, next){
 // Connection d'un utilisateur 
 
 exports.login = async function login(req, res, next){
-    const userExists = await prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
         where: {
             email: req.body.email //'email@mail.com2' 
         },
@@ -50,7 +50,7 @@ exports.login = async function login(req, res, next){
         }
     })
 
-    if(!userExists){
+    if(!user){
         return res.status(400).json({ message : 'Cet utilisateur n\'existe pas.'})
     }
 
