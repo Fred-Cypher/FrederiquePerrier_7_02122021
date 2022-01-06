@@ -3,6 +3,7 @@ import { useState } from "react";
 import Header from "./Header";
 import Login from "./Login";
 import '../style/signup.css';
+import { Link } from "react-router-dom";
 
 
 const Signup = () => {
@@ -151,9 +152,15 @@ const Signup = () => {
                                     <input type="password" name='verifPassword' id='verifPassword' className="form-control" onChange={(e) => setCheckPassword(e.target.value)} value= { checkPassword } /> 
                                     <small className="small"></small>
                                 </div>
-                                <div >
-                                    <button type='submit' className="btn mt-3 rounded border">Inscription </button>
+                                <div className="row flex-row">
+                                    <div className="col-6">
+                                        <button type='submit' className="btn mt-3 rounded border">Inscription </button>
+                                    </div>
+                                    <div className="col-6">
+                                        <Link to='/Login'><button className="btn mt-3 rounded border">Déjà inscrit ?</button></Link>
+                                    </div>
                                 </div>
+                                
                             </form>
                         </div>
                     </div>

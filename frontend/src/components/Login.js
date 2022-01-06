@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-//import { Link } from "react-router-dom";
 import Header from "./Header";
 import Messages from './Messages';
 import '../style/signup.css';
+import { Link } from "react-router-dom";
 
 const Login = () =>{
     localStorage.clear();
@@ -19,7 +19,7 @@ const Login = () =>{
             const small = inputField.nextElementSibling;
 
             if (regex.test(inputValue)) {
-                small.innerHTML = '✅ La forme est correcte, veillez à avoir rentrer la bonne valeur';
+                small.innerHTML = '✅ La forme est correcte, veillez à avoir rentrer la valeur enregistrée lors de l\'inscription';
                 small.classList.remove('text-danger');
                 small.classList.add('text-success');
                 inputField.style.borderColor = 'green';
@@ -115,8 +115,13 @@ const Login = () =>{
                                 <input type="password" name='password' id='password' className="form-control" onChange={(e) => setPassword(e.target.value)} value= { password } required /> 
                                 <small className="small"></small>
                             </div>
-                            <div>
-                                <button type='submit' className="btn mt-3 rounded border">Connexion </button>
+                            <div className="row flex-row">
+                                <div className="col-6">
+                                    <button type='submit' className="btn mt-3 rounded border">Connexion </button>
+                                </div>
+                                <div className="col-6">
+                                    <Link to='/Signup'><button className="btn mt-3 rounded border">Pas encore inscrit ?</button></Link>
+                                </div>
                             </div>
                         </form>
                     </div>

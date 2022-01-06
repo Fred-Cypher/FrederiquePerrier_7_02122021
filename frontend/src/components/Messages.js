@@ -1,17 +1,17 @@
 import React from "react";
-import Header from "./Header";
+import HeaderMessages from "./HeaderMessages";
 
-const affichMessages = () => {
+const Messages = () => {
 
 
 
 return(
     <div>
-        <Header />
+        <HeaderMessages />
         Coucou
     </div>
 )
 
 }
 
-export default affichMessages;
+export default Messages;

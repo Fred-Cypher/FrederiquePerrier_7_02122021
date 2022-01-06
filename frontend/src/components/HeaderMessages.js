@@ -8,13 +8,14 @@ function HeaderMessages(){
             <div className="p-3 col-7">
                 <img src={logo} alt='Groupomania' className="img-fluid"/>
             </div>
-            <div className="row p-3 col-4 color-danger">
+            <div className="row p-3 col-4">
                 <Link to='/' >Accueil</Link>
                 <Link to='/Profil'>Profil</Link>
+                <Link to='/NewMessage'>Enregistrer un nouveau message</Link>
             </div>
         </div>
         
     )
 };
 
-export default HeaderMessages;
+export default HeaderMessages; 
