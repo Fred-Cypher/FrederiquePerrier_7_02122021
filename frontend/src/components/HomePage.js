@@ -10,11 +10,13 @@ function HomePage(){
             <div className="d-flex justify-content-center">
                 <div className="col-9 card p-3 m-2">
                     <h1 className="col-12 p-">Bienvenue sur le réseau social de Groupomania</h1>
-                    <div className="d-flex justify-content-center p-3 mt-3">
-                        <Link to='/Login'>Connexion</Link>
-                    </div>
-                    <div className="d-flex justify-content-center p-3 mt-3">
-                        <Link to='/Signup'>Inscription</Link>
+                    <div className="row flex-row">
+                        <div className="d-flex justify-content-center col-6 p-3">
+                            <Link to='/Login'><button className="btn mt-3 rounded border">Connection</button></Link>
+                        </div>
+                        <div className="d-flex justify-content-center col-6 p-3">
+                            <Link to='/Signup'><button className="btn mt-3 rounded border">Inscription</button></Link>
+                        </div>
                     </div>
                 </div>
             </div>

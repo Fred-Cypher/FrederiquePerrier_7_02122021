@@ -65,10 +65,12 @@ const Login = () =>{
             }
 
             console.log(fetchData);
+            
 
             fetch('http://localhost:5500/api/auth/login', fetchData)
                 .then(response => response.json())
                 .then(data => {
+                    console.log(data + 'test login');
                     if(userLogin.email === data.email && userLogin.password === data.password){
                         console.log('OK')
                         setFormSubmit(true)
@@ -116,10 +118,10 @@ const Login = () =>{
                                 <small className="small"></small>
                             </div>
                             <div className="row flex-row">
-                                <div className="col-6">
+                                <div className="d-flex justify-content-center col-6">
                                     <button type='submit' className="btn mt-3 rounded border">Connexion </button>
                                 </div>
-                                <div className="col-6">
+                                <div className="d-flex justify-content-center col-6">
                                     <Link to='/Signup'><button className="btn mt-3 rounded border">Pas encore inscrit ?</button></Link>
                                 </div>
                             </div>

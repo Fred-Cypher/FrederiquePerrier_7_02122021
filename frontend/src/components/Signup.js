@@ -153,14 +153,13 @@ const Signup = () => {
                                     <small className="small"></small>
                                 </div>
                                 <div className="row flex-row">
-                                    <div className="col-6">
+                                    <div className="d-flex justify-content-center col-6">
                                         <button type='submit' className="btn mt-3 rounded border">Inscription </button>
                                     </div>
-                                    <div className="col-6">
+                                    <div className="d-flex justify-content-center col-6">
                                         <Link to='/Login'><button className="btn mt-3 rounded border">Déjà inscrit ?</button></Link>
                                     </div>
                                 </div>
-                                
                             </form>
                         </div>
                     </div>

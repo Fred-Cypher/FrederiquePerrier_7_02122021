@@ -13,62 +13,90 @@ exports.allUsers = async function allUser(req, res, next){
 // Enregistrement d'un utilisateur avec hash  
 
 exports.signup = async function signup(req, res, next){
-    const userExists = await prisma.user.findUnique({
+    try{
+        const userExists = await prisma.user.findUnique({
         where: {
             email: String(req.body.email)
         }, select: {
             email: true
         }
-    })
-    if(userExists){
-        return res.status(400).json({ message : 'Cet email existe déjà dans la base de données'})
+        })
+        if(userExists){
+            res.send(JSON.stringify({"status": 404, "error": 'Cet utilisateur existe déjà dans la base de données', "token": null}));
+            return;
+        }
+
+        const hash = await bcrypt.hash(req.body.password, 10);
+
+        try{
+            const user = await prisma.user.create({
+                data: {
+                    first_name: req.body.first_name,
+                    last_name: req.body.last_name,
+                    email: req.body.email,
+                    password: hash
+                },
+            })
+            res.json(JSON.stringify({'status': 200, "error": null, "response": user.id}))
+        }
+        catch(e){
+            res.send(JSON.stringify({"status" : 404, "error": 'Erreur lors de l\'enregistrement de l\'utilisateur', 'token': null}))
+        }
     }
-
-    const hash = await bcrypt.hash(req.body.password, 10);
-
-    const newUser = await prisma.user.create({
-        data: {
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
-            email: req.body.email,
-            password: hash
-        },
-    })
-    res.json(newUser)
-    .catch (error, res.status(401).json({ error: error | 'Requête non authentifiée'})) 
+    catch(e){
+        res.send(JSON.stringify({"status" : 500, "error": 'Requête non authentifiée', 'token': null}))
+    }
 };
 
 // Connection d'un utilisateur 
 
 exports.login = async function login(req, res, next){
-    const user = await prisma.user.findUnique({
-        where: {
-            email: String(req.body.email) //'email@mail.com2' 
-        },
-        select: {
-            email: true,
-            password: true
+    try{
+        const user = await prisma.user.findUnique({
+            where: {
+                email: String(req.body.email) //'email@mail.com2' 
+            },
+            select: {
+                id: true,
+                email: true,
+                password: true
+            }
+        })
+
+        console.log( 'back user : ' + user );
+
+        if(!user){
+            res.send(JSON.stringify({"status" : 400, "error": 'Cet utilisateur n\'existe pas.', 'token': null}));
+            return;
         }
-    })
 
-    if(!user){
-        return res.status(400).json({ message : 'Cet utilisateur n\'existe pas.'})
+        try{
+            const valid = await bcrypt.compare(req.body.password, user.password) //('motdepasse2', '$2b$10$GLW/ngDIDJGihzzwSMRz/eeev4gk4oSLmUh32ylLIGK/EokfGnPvG')
+
+            if(!valid){
+                res.send(JSON.stringify({"status" : 404, "error": 'Mot de passe incorrect', 'token': null}))
+                return;
+            }
+            console.log(req.body.password);
+            console.log(user.password);
+            console.log(user.id)
+
+            const token = jwt.sign({
+                userId: user.id},
+                process.env.TOKEN, 
+                { expiresIn: '24h' }
+            );
+            res.send(JSON.stringify({"status": 200, "error": null, "token": token}))
+        }
+        catch(e){
+            res.send(JSON.stringify({"status" : 401, "error": 'Problème lors de l\'authentification', 'token': null}))
+        }
+
     }
-
-    const valid = await bcrypt.compare(req.body.password, user.password) //('motdepasse2', '$2b$10$GLW/ngDIDJGihzzwSMRz/eeev4gk4oSLmUh32ylLIGK/EokfGnPvG')
-
-    if(!valid){
-        return res.status(401).json({ error: 'Mot de passe incorrect' });
+    catch(e){
+        res.send(JSON.stringify({"status" : 401, "error": 'Problème lors de la connection', 'token': null}))
     }
-
-    res.status(200).json({
-        userId: user.id, // 5
-        token: jwt.sign(
-            { userId: user.id }, // 5
-            process.env.TOKEN, 
-            { expiresIn: '24h' }
-        )
-    });
+    
 };
 
 // Suppression simple d'un utilisateur 
