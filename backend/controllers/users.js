@@ -61,9 +61,9 @@ exports.login = async function login(req, res, next){
                 email: true,
                 password: true
             }
-        })
+        });
 
-        console.log( 'back user : ' + user );
+        console.log('user : ', user);
 
         if(!user){
             res.send(JSON.stringify({"status" : 400, "error": 'Cet utilisateur n\'existe pas.', 'token': null}));
@@ -73,19 +73,22 @@ exports.login = async function login(req, res, next){
         try{
             const valid = await bcrypt.compare(req.body.password, user.password) //('motdepasse2', '$2b$10$GLW/ngDIDJGihzzwSMRz/eeev4gk4oSLmUh32ylLIGK/EokfGnPvG')
 
+            console.log(valid);
+            console.log('req.body.password : ', req.body.password);
+            console.log('user.password : ', user.password);
+            console.log('user.id : ', user.id)
+
             if(!valid){
                 res.send(JSON.stringify({"status" : 404, "error": 'Mot de passe incorrect', 'token': null}))
                 return;
             }
-            console.log(req.body.password);
-            console.log(user.password);
-            console.log(user.id)
 
             const token = jwt.sign({
                 userId: user.id},
                 process.env.TOKEN, 
                 { expiresIn: '24h' }
             );
+            
             res.send(JSON.stringify({"status": 200, "error": null, "token": token}))
         }
         catch(e){

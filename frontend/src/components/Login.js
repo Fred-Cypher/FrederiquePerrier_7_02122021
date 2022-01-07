@@ -62,7 +62,7 @@ const Login = () =>{
                 headers: {
                     'Content-Type': 'application/json'
                 }
-            }
+            };
 
             console.log(fetchData);
             
@@ -70,7 +70,11 @@ const Login = () =>{
             fetch('http://localhost:5500/api/auth/login', fetchData)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data + 'test login');
+                    console.log('userLogin.email : ', userLogin.email); // OK
+                    console.log('userLogin.password :', userLogin.password); // OK
+                    console.log('data.email : ', data.email); // undefined
+                    console.log('data.password : ', data.password); // undefined
+                    console.log('base de données : ',data);
                     if(userLogin.email === data.email && userLogin.password === data.password){
                         console.log('OK')
                         setFormSubmit(true)
