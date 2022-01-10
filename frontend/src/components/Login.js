@@ -19,13 +19,13 @@ const Login = () =>{
             const small = inputField.nextElementSibling;
 
             if (regex.test(inputValue)) {
-                small.innerHTML = '✅ La forme est correcte, veillez à avoir rentrer la valeur enregistrée lors de l\'inscription';
+                small.textContent = '✅ La forme est correcte, veillez à avoir rentrer la valeur enregistrée lors de l\'inscription';
                 small.classList.remove('text-danger');
                 small.classList.add('text-success');
                 inputField.style.borderColor = 'green';
                 return true;
             } else if (!regex.test(inputValue)) {
-                small.innerHTML = invalidMessage;
+                small.textContent = invalidMessage;
                 small.classList.remove('text-success');
                 small.classList.add('text-danger');
                 inputField.style.borderColor = 'red';
@@ -54,7 +54,7 @@ const Login = () =>{
                 password: password
             }
 
-            console.log(userLogin);
+            console.log('userLogin :' , userLogin);
 
             const fetchData = {
                 method: 'POST',
@@ -64,7 +64,7 @@ const Login = () =>{
                 }
             };
 
-            console.log(fetchData);
+            console.log('fetchdata : ', fetchData);
             
 
             fetch('http://localhost:5500/api/auth/login', fetchData)
@@ -72,15 +72,16 @@ const Login = () =>{
                 .then(data => {
                     console.log('userLogin.email : ', userLogin.email); // OK
                     console.log('userLogin.password :', userLogin.password); // OK
-                    console.log('data.email : ', data.email); // undefined
-                    console.log('data.password : ', data.password); // undefined
-                    console.log('base de données : ',data);
-                    if(userLogin.email === data.email && userLogin.password === data.password){
+                    console.log('data.email : ', data.email); // OK
+                    console.log('data.first_name : ', data.first_name); // OK
+                    console.log('data.last_name : ', data.last_name); // OK
+                    console.log('base de données : ', data); // OK
+                    if(userLogin.email === data.email){
                         console.log('OK')
                         setFormSubmit(true)
-                        /*localStorage.setItem('userId', data.id);
+                        localStorage.setItem('userId', data.id);
                         localStorage.setItem('userFirstName', data.first_name);
-                        localStorage.setItem('userLastName', data.last_name);*/
+                        localStorage.setItem('userLastName', data.last_name);
                     } else {
                         console.log('Ça ne fonctionne pas :( ')
                         setFormSubmit(false)
@@ -99,7 +100,7 @@ const Login = () =>{
 
     return(
         <>
-        { formSubmit ? (
+        { formSubmit? (
             <>
                 <div>Bienvenue sur le forum de partage d'images</div>
                 <Messages />

@@ -22,14 +22,14 @@ const Signup = () => {
         const validInput = function (inputField, inputValue, regex, invalidMessage) {
             const small = inputField.nextElementSibling;
 
-            if (regex.test(inputValue)) {
-                small.innerHTML = '✅ OK';
+            if (regex.test(inputValue.trim())) {
+                small.textContent = '✅ OK';
                 small.classList.remove('text-danger');
                 small.classList.add('text-success');
                 inputField.style.borderColor = 'green';
                 return true;
-            } else if (!regex.test(inputValue)) {
-                small.innerHTML = invalidMessage;
+            } else if (!regex.test(inputValue.trim())) {
+                small.textContent = invalidMessage;
                 small.classList.remove('text-success');
                 small.classList.add('text-danger');
                 inputField.style.borderColor = 'red';
@@ -73,7 +73,7 @@ const Signup = () => {
             const verifPassword = document.getElementById('verifPassword');
             // Vérification du mot de passe 
             if (password !== checkPassword) {
-                verifPassword.nextElementSibling.innerHTML = '⛔ Mots de passe différents, réessayez.';
+                verifPassword.nextElementSibling.textContent = '⛔ Mots de passe différents, réessayez.';
                 verifPassword.nextElementSibling.classList.remove('text-success');
                 verifPassword.nextElementSibling.classList.add('text-danger');
                 verifPassword.style.borderColor = 'red';
@@ -129,7 +129,7 @@ const Signup = () => {
                             <form action='' onSubmit={ handleSubmit } method='POST' className="col-md-10 col-lg-7">
                                 <div className="form-group">
                                     <label htmlFor='firstName' className="form-label">Prénom : </label>
-                                    <input type='text' name='firstName' id='firstName' className="form-control" onChange={(e) => setFirstName(e.target.value)} value= { firstName } /> 
+                                    <input type='text' name='firstName' id='firstName' className="form-control"  onChange={(e) => setFirstName(e.target.value)} value= { firstName } /> 
                                     <small className="small"></small>
                                 </div>
                                 <div className="form-group">

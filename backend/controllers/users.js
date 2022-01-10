@@ -58,6 +58,8 @@ exports.login = async function login(req, res, next){
             },
             select: {
                 id: true,
+                first_name: true,
+                last_name: true,
                 email: true,
                 password: true
             }
@@ -68,12 +70,11 @@ exports.login = async function login(req, res, next){
         if(!user){
             res.send(JSON.stringify({"status" : 400, "error": 'Cet utilisateur n\'existe pas.', 'token': null}));
             return;
-        }
-
-        try{
+        } else {
+            try{
             const valid = await bcrypt.compare(req.body.password, user.password) //('motdepasse2', '$2b$10$GLW/ngDIDJGihzzwSMRz/eeev4gk4oSLmUh32ylLIGK/EokfGnPvG')
 
-            console.log(valid);
+            console.log('valid : ', valid);
             console.log('req.body.password : ', req.body.password);
             console.log('user.password : ', user.password);
             console.log('user.id : ', user.id)
@@ -89,12 +90,12 @@ exports.login = async function login(req, res, next){
                 { expiresIn: '24h' }
             );
             
-            res.send(JSON.stringify({"status": 200, "error": null, "token": token}))
+            res.send(JSON.stringify({"status": 200, "error": null, "token": token, "email": user.email, "id": user.id, "first_name": user.first_name, "last_name": user.last_name}))
+            }
+            catch(e){
+                res.send(JSON.stringify({"status" : 401, "error": 'Problème lors de l\'authentification', 'token': null}))
+            }
         }
-        catch(e){
-            res.send(JSON.stringify({"status" : 401, "error": 'Problème lors de l\'authentification', 'token': null}))
-        }
-
     }
     catch(e){
         res.send(JSON.stringify({"status" : 401, "error": 'Problème lors de la connection', 'token': null}))
