@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Header from "./Header";
 import Messages from './Messages';
 import '../style/signup.css';
-import { Link } from "react-router-dom";
+import { Link, Navigate, Routes, Route } from "react-router-dom";
 
 const Login = () =>{
     localStorage.clear();
@@ -78,10 +78,11 @@ const Login = () =>{
                     console.log('base de données : ', data); // OK
                     if(userLogin.email === data.email){
                         console.log('OK')
-                        setFormSubmit(true)
+                        setFormSubmit(true);
                         localStorage.setItem('userId', data.id);
                         localStorage.setItem('userFirstName', data.first_name);
                         localStorage.setItem('userLastName', data.last_name);
+                        localStorage.setItem('userToken', data.token);
                     } else {
                         console.log('Ça ne fonctionne pas :( ')
                         setFormSubmit(false)
@@ -94,9 +95,14 @@ const Login = () =>{
                     e.preventDefault();
                 });
         }
+        if(setFormSubmit){
+            <Routes>
+                <Route path='/messages' element={formSubmit ? <Navigate to='/messages' /> : <Messages />} />
+            </Routes>  
+        }
     };
 
-    
+// Trouver pour rediriger vers la page Messages au lieu d'afficher le composants sur la page Login (ou Signup si j'y suis encore)
 
     return(
         <>
