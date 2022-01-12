@@ -1,18 +1,20 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import HomePage from "./HomePage";
 import Login from "./Login";
+import Messages from "./Messages";
+import NewMessage from "./NewMessage";
 import Signup from "./Signup";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={< HomePage />} />
-        <Route path="signup" element={<Signup />} />
-        <Route path="login" element={<Login />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path="/" element={< HomePage />} />
+      <Route path="signup" element={<Signup />} />
+      <Route path="login" element={<Login />} />
+      <Route path="messages" element={<Messages />} />
+      <Route path="newmessage" element={<NewMessage />} />
+    </Routes>
   );
 }
 

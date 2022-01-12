@@ -4,12 +4,20 @@ import { Link } from "react-router-dom";
 
 function Header(){
     return(
-        <div className="row border-bottom p-3 col-12 ">
-            <div className="p-3 col-7">
+        <div className="column border-bottom p-3 col-12 ">
+            <div className="p-3 col-12">
                 <img src={logo} alt='Groupomania' className="img-fluid"/>
             </div>
-            <div className="row p-3 col-4">
-                <Link to='/' >Accueil</Link>
+            <div className="navbar row p-3">
+                <div>
+                    <Link to='/' >Accueil</Link>
+                </div>
+                <div>
+                    <Link to='/signup'>Inscription</Link>
+                </div>
+                <div>
+                    <Link to='/login'>Connection</Link>
+                </div>
             </div>
         </div>
         

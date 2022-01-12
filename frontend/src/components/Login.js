@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import Header from "./Header";
 import Messages from './Messages';
 import '../style/signup.css';
-import { Link, Navigate, Routes, Route } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 
 const Login = () =>{
     localStorage.clear();
+    const navigate = useNavigate();
     const [formSubmit, setFormSubmit] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -82,23 +84,22 @@ const Login = () =>{
                         localStorage.setItem('userId', data.id);
                         localStorage.setItem('userFirstName', data.first_name);
                         localStorage.setItem('userLastName', data.last_name);
-                        localStorage.setItem('userToken', data.token);
+                        localStorage.setItem('userToken', data.token);                
                     } else {
                         console.log('Ça ne fonctionne pas :( ')
                         setFormSubmit(false)
                         return 'Erreur lors de la connection, veuillez recommencer'
                     }
-                    
+
+                    if(setFormSubmit){
+                        navigate("/messages")
+                        alert ('Vous allez être redirigé sur le forum de partage d\'images') 
+                    } 
                 })
                 .catch((err) => { 
                     console.log(err);
                     e.preventDefault();
                 });
-        }
-        if(setFormSubmit){
-            <Routes>
-                <Route path='/messages' element={formSubmit ? <Navigate to='/messages' /> : <Messages />} />
-            </Routes>  
         }
     };
 
@@ -108,7 +109,6 @@ const Login = () =>{
         <>
         { formSubmit? (
             <>
-                <div>Bienvenue sur le forum de partage d'images</div>
                 <Messages />
             </>
         ) : (
@@ -133,7 +133,7 @@ const Login = () =>{
                                     <button type='submit' className="btn mt-3 rounded border">Connexion </button>
                                 </div>
                                 <div className="d-flex justify-content-center col-6">
-                                    <Link to='/Signup'><button className="btn mt-3 rounded border">Pas encore inscrit ?</button></Link>
+                                    <Link to='/signup'><button className="btn mt-3 rounded border">Pas encore inscrit ?</button></Link>
                                 </div>
                             </div>
                         </form>

@@ -3,10 +3,11 @@ import { useState } from "react";
 import Header from "./Header";
 import Login from "./Login";
 import '../style/signup.css';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 const Signup = () => {
+    const navigate = useNavigate();
     const [formSumbit, setFormSubmit] = useState(false);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -102,12 +103,15 @@ const Signup = () => {
                     .then(response => response.json())
                     .then(() => {
                         setFormSubmit(true)
+                        if(setFormSubmit){
+                            navigate("/login")
+                        }
                     })
-                        .catch((err) => {
-                            console.log(err);
-                            e.preventDefault();
-                        });
-                }
+                    .catch((err) => {
+                        console.log(err);
+                        e.preventDefault();
+                    });
+            }
         }
     }
 
@@ -157,7 +161,7 @@ const Signup = () => {
                                         <button type='submit' className="btn mt-3 rounded border">Inscription </button>
                                     </div>
                                     <div className="d-flex justify-content-center col-6">
-                                        <Link to='/Login'><button className="btn mt-3 rounded border">Déjà inscrit ?</button></Link>
+                                        <Link to='/login'><button className="btn mt-3 rounded border">Déjà inscrit ?</button></Link>
                                     </div>
                                 </div>
                             </form>
