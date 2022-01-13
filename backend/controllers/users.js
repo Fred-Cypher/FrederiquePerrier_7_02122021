@@ -37,6 +37,7 @@ exports.signup = async function signup(req, res, next){
                     password: hash
                 },
             })
+            console.log('user : ', user)
             res.json(JSON.stringify({'status': 200, "error": null, "response": user.id}))
         }
         catch(e){

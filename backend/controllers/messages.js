@@ -48,20 +48,26 @@ exports.getMessageByUser = async(req, res, next) => {
 
 // Créer un message
 
-exports.createMessage = async(req, res, next) => {
-    const newMessage = await prisma.message.create({
-        data: {
-            title: req.body.title, //'Message Marie',
-            image_url: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-            description: req.boby.description, //'Description Marie',
-            user: {
-                connect: {
-                    id: user_id //3
+exports.createMessage = async function createMessage(req, res, next){
+    try{
+        const message = await prisma.message.create({
+            data: {
+                title: req.body.title,
+                image_url: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+                description: req.boby.description, 
+                user: {
+                    connect: {
+                        id: user_id 
+                    }
                 }
             }
-        }
-    })
-    res.json(newMessage)
+        })
+        console.log('nouveau message : ', message);
+        res.json(JSON.stringify({ 'status': 200, 'error': null, 'response': message.id}))
+    }
+    catch(e){
+        res.send(JSON.stringify({"status" : 404, "error": 'Erreur lors de l\'enregistrement de l\'image', 'token': null}))
+    }
 };
 
 
