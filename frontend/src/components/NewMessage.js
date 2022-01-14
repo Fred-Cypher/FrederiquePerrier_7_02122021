@@ -5,7 +5,12 @@ function NewMessage(){
     const [formSubmit, setFormSubmit] = useState(false)
     const [title, setTitle] = useState('');
     const [description, setDescription] =  useState('');
-    const [picture, setPicture] = useState(null);
+    const [picture, setPicture] = useState('');
+
+    console.log('title ', title)
+    console.log('description ', description)
+    console.log('picture ', picture)
+
 
     const handleSubmit = (e) =>{
         e.preventDefault();
@@ -15,32 +20,35 @@ function NewMessage(){
 
             const message = {
                 title: title,
-                userId: userId,
+                user_id: userId,
                 description: description,
-                imageUrl: picture
+                image_url: picture
             }
 
-            const token = localStorage.getItem('token');
+            console.log('message ', message)
 
-            
+            const token = localStorage.getItem('userToken');
+
+            console.log('token 1 ', token)
 
             const fetchMessage = {
                 method: 'POST',
                 body: JSON.stringify(message),
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer' + token
+                    'Authorization': 'Bearer ' + token
                 }
             }
             
+            console.log('fecth 1 ', fetchMessage)
 
             fetch('http://localhost:5500/api/messages', fetchMessage)
                 .then(response => response.json())
                 .then(data => {
                     console.log('titre : ', message.title)
-                    console.log('userID: ', message.userId)
+                    console.log('userID: ', message.user_id)
                     console.log('description : ', message.description)
-                    console.log('image : ', message.imageUrl)
+                    console.log('image : ', message.image_url)
                     console.log(fetchMessage)
                     console.log(token)
                     setFormSubmit(true)
@@ -73,12 +81,12 @@ function NewMessage(){
                     <div className="form-group">
                         <label htmlFor='description' className="form-label">Description : </label>
                         <small className="form-text"> Limité à 100 caractères</small>
-                        <input type='text' name='description' id='description' className="form-control" onChange={(e) => setDescription(e.target.value)} value = { description } />
+                        <input type='text' name='description' id='description' maxLength={100} className="form-control" onChange={(e) => setDescription(e.target.value)} value = { description } />
                     </div>
                     <div className="form-group">
                         <label htmlFor='picture' className="form-label">Image : </label>
                         <small className="form-text"> Seul les formats .gif, .png et .jpg sont autorisés</small>
-                        <input type='file' name='picture' accept=".jpg, .jpeg, .png, .gif" id='picture' className="form-control" onChange={(e) => setPicture(e.target.value[0])} value = { picture } /> 
+                        <input type='file' name='picture' accept=".jpg, .jpeg, .png, .gif" id='picture' className="form-control" onChange={(e) => setPicture(e.target.files[0])} value = { picture } /> 
                     </div>
                     <div className="row flex-row">
                         <div className="d-flex justify-content-center col-6">
@@ -93,3 +101,5 @@ function NewMessage(){
 };
 
 export default NewMessage;
+
+// Trouver comment mettre l'input file en élément non-contrôlé 

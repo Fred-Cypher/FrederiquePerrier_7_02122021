@@ -49,6 +49,10 @@ exports.getMessageByUser = async(req, res, next) => {
 // Créer un message
 
 exports.createMessage = async function createMessage(req, res, next){
+    console.log(req.body.title);
+    console.log(req.body.description);
+    console.log(image_url);
+    console.log(req.file.filename);
     try{
         const message = await prisma.message.create({
             data: {
@@ -62,7 +66,6 @@ exports.createMessage = async function createMessage(req, res, next){
                 }
             }
         })
-        console.log('nouveau message : ', message);
         res.json(JSON.stringify({ 'status': 200, 'error': null, 'response': message.id}))
     }
     catch(e){
