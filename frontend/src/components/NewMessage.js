@@ -5,7 +5,7 @@ function NewMessage(){
     const [formSubmit, setFormSubmit] = useState(false)
     const [title, setTitle] = useState('');
     const [description, setDescription] =  useState('');
-    const [picture, setPicture] = useState('');
+    const [picture, setPicture] = useState(null);
 
     console.log('title ', title)
     console.log('description ', description)
@@ -22,7 +22,7 @@ function NewMessage(){
                 title: title,
                 user_id: userId,
                 description: description,
-                image_url: picture
+                image_url: picture.name
             }
 
             console.log('message ', message)
@@ -35,7 +35,7 @@ function NewMessage(){
                 method: 'POST',
                 body: JSON.stringify(message),
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Accept': 'multipart/form-data',
                     'Authorization': 'Bearer ' + token
                 }
             }
@@ -86,7 +86,7 @@ function NewMessage(){
                     <div className="form-group">
                         <label htmlFor='picture' className="form-label">Image : </label>
                         <small className="form-text"> Seul les formats .gif, .png et .jpg sont autorisés</small>
-                        <input type='file' name='picture' accept=".jpg, .jpeg, .png, .gif" id='picture' className="form-control" onChange={(e) => setPicture(e.target.files[0])} value = { picture } /> 
+                        <input type='file' name='picture' accept=".jpg, .jpeg, .png, .gif" id='picture' className="form-control" onChange={(e) => setPicture(e.target.files[0])}  /> 
                     </div>
                     <div className="row flex-row">
                         <div className="d-flex justify-content-center col-6">

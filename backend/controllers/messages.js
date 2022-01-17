@@ -51,8 +51,7 @@ exports.getMessageByUser = async(req, res, next) => {
 exports.createMessage = async function createMessage(req, res, next){
     console.log(req.body.title);
     console.log(req.body.description);
-    console.log(image_url);
-    console.log(req.file.filename);
+    console.log(req.body);
     try{
         const message = await prisma.message.create({
             data: {
