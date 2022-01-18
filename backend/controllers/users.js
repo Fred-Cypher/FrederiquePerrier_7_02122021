@@ -38,7 +38,7 @@ exports.signup = async function signup(req, res, next){
                 },
             })
             console.log('user : ', user)
-            res.json(JSON.stringify({'status': 200, "error": null, "response": user.id}))
+            res.send(JSON.stringify({'status': 200, "error": null, "response": user.id}))
         }
         catch(e){
             res.send(JSON.stringify({"status" : 404, "error": 'Erreur lors de l\'enregistrement de l\'utilisateur', 'token': null}))

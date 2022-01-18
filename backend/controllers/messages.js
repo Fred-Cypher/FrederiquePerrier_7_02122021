@@ -5,29 +5,20 @@ const fs = require('fs'); // File system de Node pour interagir avec le système
 
 // Afficher tous les messages 
 
-exports.getAllMessages = async(req, res, next) => {
-    const messages = await prisma.message.findMany({
-        select: {
-            title: true,
-            user: true,
-            user_id: true,
-            created_at: true,
-            image_url: true,
-            description: true
-        }
-    })
-    res.json(messages)
+exports.getAllMessages = async function allMessages(req, res, next){
+    const allMessages = await prisma.message.findMany()
+    res.send(JSON.stringify({"status": 200, "error": null, 'response': allMessages}));
 };
 
 // Afficher un seul message 
 
-exports.getOneMessage = async(req, res, next) => {
+exports.getOneMessage = async function oneMessage(req, res, next){
     const oneMessage = await prisma.message.findUnique({
         where: {
-            id : req.params.id // 1 
+            id : Number(req.params.id) // 1 
         }
     })
-    res.json(oneMessage)
+    res.send(JSON.stringify({"status": 200, "error": null, "response": oneMessage}));
 };
 
 // Afficher les messages d'un seul utilisateur
@@ -35,7 +26,7 @@ exports.getOneMessage = async(req, res, next) => {
 exports.getMessageByUser = async(req, res, next) => {
     const userMessages = await prisma.message.findMany({
         where: {
-            user_id : req.params.id // 5
+            user_id : Number(req.params.id) // 5
         }, select:{
             title: true,
             created_at: true,
@@ -48,7 +39,7 @@ exports.getMessageByUser = async(req, res, next) => {
 
 // Créer un message
 
-exports.createMessage = async function createMessage(req, res, next){
+exports.createMessage = async function newMessage(req, res, next){
     console.log(req.body.title);
     console.log(req.body.description);
     console.log(req.body);
@@ -65,7 +56,8 @@ exports.createMessage = async function createMessage(req, res, next){
                 }
             }
         })
-        res.json(JSON.stringify({ 'status': 200, 'error': null, 'response': message.id}))
+        console.log('const message du back', message)
+        res.send(JSON.stringify({ 'status': 200, 'error': null, 'response': message.id}))
     }
     catch(e){
         res.send(JSON.stringify({"status" : 404, "error": 'Erreur lors de l\'enregistrement de l\'image', 'token': null}))

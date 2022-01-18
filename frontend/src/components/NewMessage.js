@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+//import { useNavigate } from "react-router-dom";
 import HeaderMessages from "./HeaderMessages";
 
 function NewMessage(){
+    //const navigate = useNavigate();
     const [formSubmit, setFormSubmit] = useState(false)
     const [title, setTitle] = useState('');
     const [description, setDescription] =  useState('');
@@ -18,7 +20,7 @@ function NewMessage(){
         if (title && description && picture){
             const userId = localStorage.getItem('userId')
 
-            const message = {
+            let message = {
                 title: title,
                 user_id: userId,
                 description: description,
@@ -31,7 +33,7 @@ function NewMessage(){
 
             console.log('token 1 ', token)
 
-            const fetchMessage = {
+            let fetchMessage = {
                 method: 'POST',
                 body: JSON.stringify(message),
                 headers: {
@@ -44,14 +46,18 @@ function NewMessage(){
 
             fetch('http://localhost:5500/api/messages', fetchMessage)
                 .then(response => response.json())
-                .then(data => {
+                .then(() => {
                     console.log('titre : ', message.title)
                     console.log('userID: ', message.user_id)
                     console.log('description : ', message.description)
                     console.log('image : ', message.image_url)
-                    console.log(fetchMessage)
-                    console.log(token)
+                    console.log('fetchmessage then :', fetchMessage)
+                    console.log(token) 
                     setFormSubmit(true)
+                    /*if(setFormSubmit){
+                        navigate("/messages")
+                        alert('')
+                    }*/
                 }) 
                 .catch((err) => { 
                     console.log(err);
