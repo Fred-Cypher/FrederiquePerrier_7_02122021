@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-//import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import HeaderMessages from "./HeaderMessages";
 
 function NewMessage(){
-    //const navigate = useNavigate();
+    const navigate = useNavigate();
     const [formSubmit, setFormSubmit] = useState(false)
     const [title, setTitle] = useState('');
     const [description, setDescription] =  useState('');
@@ -54,10 +54,10 @@ function NewMessage(){
                     console.log('fetchmessage then :', fetchMessage)
                     console.log(token) 
                     setFormSubmit(true)
-                    /*if(setFormSubmit){
+                    if(setFormSubmit){
                         navigate("/messages")
-                        alert('')
-                    }*/
+                        //alert('')
+                    }
                 }) 
                 .catch((err) => { 
                     console.log(err);

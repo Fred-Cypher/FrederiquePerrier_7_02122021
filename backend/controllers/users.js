@@ -15,11 +15,11 @@ exports.allUsers = async function allUser(req, res, next){
 exports.signup = async function signup(req, res, next){
     try{
         const userExists = await prisma.user.findUnique({
-        where: {
-            email: String(req.body.email)
-        }, select: {
-            email: true
-        }
+            where: {
+                email: String(req.body.email)
+            }, select: {
+                email: true
+            }
         })
         if(userExists){
             res.send(JSON.stringify({"status": 404, "error": 'Cet utilisateur existe déjà dans la base de données', "token": null}));

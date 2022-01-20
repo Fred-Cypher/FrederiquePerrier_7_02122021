@@ -39,28 +39,47 @@ exports.getMessageByUser = async(req, res, next) => {
 
 // Créer un message
 
-exports.createMessage = async function newMessage(req, res, next){
-    console.log(req.body.title);
-    console.log(req.body.description);
-    console.log(req.body);
+exports.createMessage = async function createMessage(req, res, next){
+    console.log('req.body.title', req.body.title);
+    console.log('req.bodydescription', req.body.description);
+    console.log('req.body', req.body);
+
     try{
-        const message = await prisma.message.create({
-            data: {
-                title: req.body.title,
-                image_url: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-                description: req.boby.description, 
-                user: {
-                    connect: {
-                        id: user_id 
-                    }
-                }
+        const userExists = await prisma.user.findUnique({
+            where: {
+                id: Number(req.body.id)
+            }, select: {
+                id: true
             }
         })
-        console.log('const message du back', message)
-        res.send(JSON.stringify({ 'status': 200, 'error': null, 'response': message.id}))
+            if(!userExists){
+                res.send(JSON.stringify({"status": 404, "error": 'Cet utilisateur n\'existe pas', "token": null}));
+                return;
+            }
+
+        try{
+            const message = await prisma.message.create({
+                data: {
+                    title: req.body.title,//,'Escalade'
+                    image_url: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`, //'https://cdn.pixabay.com/photo/2018/08/31/15/44/kitten-3644941_960_720.jpg',
+                    description: req.boby.description,//'Petit chaton veut devenir grand', 
+                    user: {
+                        connect: {
+                            id: user_id // 2 
+                        }
+                    }
+                }
+            })
+            console.log('const message du back', message)
+            res.send(JSON.stringify({ 'status': 200, 'error': null, 'response': message.id}))
+        }
+        catch(e){
+            res.send(JSON.stringify({"status" : 400, "error": 'Erreur lors de l\'enregistrement de l\'image', 'token': null}))
+        }
     }
+    
     catch(e){
-        res.send(JSON.stringify({"status" : 404, "error": 'Erreur lors de l\'enregistrement de l\'image', 'token': null}))
+        res.send(JSON.stringify({"status" : 500, "error": 'Erreur d\'enregistrement', 'token': null}))
     }
 };
 
