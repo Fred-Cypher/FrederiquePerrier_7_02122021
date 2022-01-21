@@ -115,8 +115,8 @@ const Login = () =>{
             <div>
                 <Header />
                 <div className="d-flex justify-content-center">
-                    <div className="card p-3 m-3 col-md-8 d-flex align-items-center">
-                        <div className="mt-3 mb-4 h4">Connexion au réseau social de Groupomania</div>
+                    <div className="card pb-3 pt-3 m-5 col-md-8 d-flex align-items-center">
+                        <div className="mt-3 mb-4 h3">Connexion au réseau social de Groupomania</div>
                         <form action="" onSubmit={ handleLogin } className="form col-md-10 col-lg-7">
                             <div className="form-group">
                                 <label htmlFor='email' className="form-label">Adresse e-mail : </label>
@@ -128,7 +128,7 @@ const Login = () =>{
                                 <input type="password" name='password' id='password' className="form-control" onChange={(e) => setPassword(e.target.value)} value= { password } required /> 
                                 <small className="small"></small>
                             </div>
-                            <div className="row flex-row">
+                            <div className="row flex-row mt-3">
                                 <div className="d-flex justify-content-center col-6">
                                     <button type='submit' className="btn mt-3 rounded border">Connexion </button>
                                 </div>

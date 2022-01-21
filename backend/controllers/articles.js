@@ -1,30 +1,29 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
-const fs = require('fs'); // File system de Node pour interagir avec le système de fichiers du serveur
 
 
-// Afficher tous les messages 
+// Afficher tous les articles 
 
-exports.getAllMessages = async function allMessages(req, res, next){
-    const allMessages = await prisma.message.findMany()
-    res.send(JSON.stringify({"status": 200, "error": null, 'response': allMessages}));
+exports.getAllArticles = async function getAllArticles(req, res, next){
+    const allArticles = await prisma.article.findMany()
+    res.send(JSON.stringify({"status": 200, "error": null, 'response': allArticles}));
 };
 
-// Afficher un seul message 
+// Afficher un seul article 
 
-exports.getOneMessage = async function oneMessage(req, res, next){
-    const oneMessage = await prisma.message.findUnique({
+exports.getOneArticle = async function oneArticle(req, res, next){
+    const oneArticle = await prisma.article.findUnique({
         where: {
             id : Number(req.params.id) // 1 
         }
     })
-    res.send(JSON.stringify({"status": 200, "error": null, "response": oneMessage}));
+    res.send(JSON.stringify({"status": 200, "error": null, "response": oneArticle}));
 };
 
-// Afficher les messages d'un seul utilisateur
+// Afficher les articles d'un seul utilisateur
 
-exports.getMessageByUser = async(req, res, next) => {
-    const userMessages = await prisma.message.findMany({
+exports.getArticleByUser = async(req, res, next) => {
+    const userArticles = await prisma.article.findMany({
         where: {
             user_id : Number(req.params.id) // 5
         }, select:{
@@ -34,18 +33,18 @@ exports.getMessageByUser = async(req, res, next) => {
             description: true
         }
     })
-    res.json(userMessages)
+    res.json(userArticles)
 };
 
-// Créer un message
+// Créer un article
 
-exports.createMessage = async(req, res, next) => {
-    console.log('req.body.title', req.body.title);
+exports.createArticle = async(req, res, next) => {
+    /*console.log('req.body.title', req.body.title);
     console.log('req.body.description', req.body.description);
-    console.log('req.body', req.body);
+    console.log('req.body', req.body);*/
 
     try{
-        const userExists = await prisma.user.findUnique({
+        const userExists = await prisma.article.findUnique({
             where: {
                 id: Number(req.params.id)
             }, select: {
@@ -58,10 +57,9 @@ exports.createMessage = async(req, res, next) => {
             }
 
         try{
-            const message = await prisma.message.create({
+            const article = await prisma.article.create({
                 data: {
                     title: req.body.title,//'Etudes',
-                    image_url: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`, //'https://cdn.pixabay.com/photo/2014/12/29/14/48/cat-582847_960_720.jpg',
                     description: req.boby.description,//'Les études, ça fatigue', 
                     user: {
                         connect: {
@@ -70,8 +68,8 @@ exports.createMessage = async(req, res, next) => {
                     }
                 }
             })
-            console.log('const message du back', message)
-            res.send(JSON.stringify({ 'status': 200, 'error': null, 'response': message.id}))
+            console.log('const article du back', article)
+            res.send(JSON.stringify({ 'status': 200, 'error': null, 'response': article.id}))
         }
         catch(e){
             res.send(JSON.stringify({"status" : 400, "error": 'Erreur lors de l\'enregistrement de l\'image', 'token': null}))
@@ -84,10 +82,10 @@ exports.createMessage = async(req, res, next) => {
 };
 
 
-// Modifier un message
+// Modifier un article
 
-exports.modifyMessage = async(req, res, next) => {
-    const messageExists = await prisma.message.findUnique({
+exports.modifyArticle = async(req, res, next) => {
+    const articleExists = await prisma.article.findUnique({
         where: {
             id: req.params.id // 1
         },
@@ -96,11 +94,11 @@ exports.modifyMessage = async(req, res, next) => {
         }
     }) 
 
-    if(!messageExists){
-        return res.status(400).json({ message : 'Ce message n\'existe pas' })
+    if(!articleExists){
+        return res.status(400).json({ message : 'Cet article n\'existe pas' })
     }
 
-    const changeMessage = await prisma.message.update({
+    const changeArticle = await prisma.article.update({
         where: {
             id: req.params.id  // 1
         },
@@ -109,13 +107,13 @@ exports.modifyMessage = async(req, res, next) => {
             description: req.boby.description // 'Changement description' 
         }
     })
-    res.json(changeMessage)
+    res.json(changeArticle)
 };
 
-// Supprimer un message
+// Supprimer un article
 
-exports.deleteMessage = async(req, res, next) => {
-    const messageExists = await prisma.message.findUnique({
+exports.deleteArticle = async(req, res, next) => {
+    const articleExists = await prisma.article.findUnique({
         where: {
             id: req.params.id // 2
         },
@@ -124,14 +122,14 @@ exports.deleteMessage = async(req, res, next) => {
         }
     }) 
 
-    if(!messageExists){
-        return res.status(400).json({ message : 'Ce message n\'existe pas' })
+    if(!articleExists){
+        return res.status(400).json({ message : 'Cet article n\'existe pas' })
     }
 
-    const deleteOneMessage = await prisma.message.delete({
+    const deleteOneArticle = await prisma.article.delete({
         where: {
             id: req.params.id // 2
         }
     })
-    res.json(deleteOneMessage)
+    res.json(deleteOneArticle)
 };

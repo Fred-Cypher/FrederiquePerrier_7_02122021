@@ -50,7 +50,7 @@ function NewMessage(){
                     console.log('titre : ', message.title)
                     console.log('userID: ', message.user_id)
                     console.log('description : ', message.description)
-                    console.log('image : ', message.image_url)
+                    console.log('image : ', picture.name)
                     console.log('fetchmessage then :', fetchMessage)
                     console.log(token) 
                     setFormSubmit(true)
@@ -77,29 +77,30 @@ function NewMessage(){
         ) : (
             <>
                 <HeaderMessages/>
-                <div>Enregistrer un nouveau message</div>
-
-                <form action='' onSubmit={ handleSubmit } method='POST' className="col-md-10 col-lg-7 m-4">
-                    <div className="form-group">
-                        <label htmlFor='title' className="form-label">Titre : </label>
-                        <input type='text' name='title' id='title' className="form-control"  onChange={(e) => setTitle(e.target.value)} value = { title } /> 
+                <div className="d-flex flex-column pb-3 pt-3 m-md-3 d-flex align-items-center">
+                    <div className="h3">Enregistrer un nouveau message : </div>
+                        <form action='' onSubmit={ handleSubmit } method='POST' className="col-11 col-md-10 col-lg-7 m-4">
+                            <div className="form-group mt-3">
+                                <label htmlFor='title' className="form-label">Titre : </label>
+                                <input type='text' name='title' id='title' className="form-control"  onChange={(e) => setTitle(e.target.value)} value = { title } /> 
+                            </div>
+                            <div className="form-group mt-3">
+                                <label htmlFor='description' className="form-label">Description : </label>
+                                <small className="form-text"> Limité à 100 caractères</small>
+                                <input type='text' name='description' id='description' maxLength={100} className="form-control" onChange={(e) => setDescription(e.target.value)} value = { description } />
+                            </div>
+                            <div className="form-group mt-3">
+                                <label htmlFor='picture' className="form-label">Image : </label>
+                                <small className="form-text"> Seul les formats .gif, .png et .jpg sont autorisés</small>
+                                <input type='file' name='picture' accept=".jpg, .jpeg, .png, .gif" id='picture' className="form-control" onChange={(e) => setPicture(e.target.files[0])}  /> 
+                            </div>
+                            <div className="row flex-row mt-3">
+                                <div className="d-flex justify-content-center">
+                                    <button type='submit' className="btn mt-3 rounded border">Enregistrer</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                    <div className="form-group">
-                        <label htmlFor='description' className="form-label">Description : </label>
-                        <small className="form-text"> Limité à 100 caractères</small>
-                        <input type='text' name='description' id='description' maxLength={100} className="form-control" onChange={(e) => setDescription(e.target.value)} value = { description } />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor='picture' className="form-label">Image : </label>
-                        <small className="form-text"> Seul les formats .gif, .png et .jpg sont autorisés</small>
-                        <input type='file' name='picture' accept=".jpg, .jpeg, .png, .gif" id='picture' className="form-control" onChange={(e) => setPicture(e.target.files[0])}  /> 
-                    </div>
-                    <div className="row flex-row">
-                        <div className="d-flex justify-content-center col-6">
-                            <button type='submit' className="btn mt-3 rounded border">Enregistrer</button>
-                        </div>
-                    </div>
-                </form>
             </>
         )}
         </>

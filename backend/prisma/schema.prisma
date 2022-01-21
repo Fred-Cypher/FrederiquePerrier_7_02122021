@@ -19,6 +19,8 @@ model User {
     is_admin Boolean @default(false)
     message Message[]
     comment Comment[]
+    article Article[]
+    note Note[]
 }
 
 model Message {
@@ -43,3 +45,26 @@ model Comment {
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 }
+
+model Article {
+      id Int @id @default(autoincrement())
+      user User @relation(fields: [user_id], references: [id])
+      user_id Int
+      title String
+      summary String
+      content String
+      created_at DateTime @default(now())
+      updated_at DateTime @updatedAt
+      comment Note[]
+  }
+  
+  model Note {
+      id Int @id @default(autoincrement())
+      user User @relation(fields: [user_id], references: [id])
+      user_id Int
+      content Article @relation(fields: [content_id], references: [id])
+      content_id Int
+      note String
+      created_at DateTime @default(now())
+      updated_at DateTime @updatedAt
+  }

@@ -17,11 +17,13 @@ app.use(limiter);
 const userRoutes = require('./routes/users');
 const messageRoutes =  require('./routes/messages');
 const commentRoutes = require('./routes/comments');
+const articleRoutes = require('./routes/articles');
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.use('/api/auth', userRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/comments', commentRoutes);
+app.use('/api/articles', articleRoutes);
 
 module.exports = app;

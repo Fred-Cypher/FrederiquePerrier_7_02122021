@@ -128,10 +128,10 @@ const Signup = () => {
                     <div>
                     <Header/>
                     <div className="d-flex justify-content-center">
-                        <div className="card p-3 m-3 col-md-8 d-flex align-items-center">
-                            <div className="mt-3 mb-4 h4">Inscription au réseau social de Groupomania</div>
-                            <form action='' onSubmit={ handleSubmit } method='POST' className="col-md-10 col-lg-7">
-                                <div className="form-group">
+                        <div className="card pb-3 pt-3 m-5 col-md-8 d-flex align-items-center">
+                            <div className="mt-3 mb-4 h3">Inscription au réseau social de Groupomania</div>
+                            <form action='' onSubmit={ handleSubmit } method='POST' className="col-md-12 col-lg-7">
+                                <div className="form-group ">
                                     <label htmlFor='firstName' className="form-label">Prénom : </label>
                                     <input type='text' name='firstName' id='firstName' className="form-control"  onChange={(e) => setFirstName(e.target.value)} value= { firstName } /> 
                                     <small className="small"></small>
@@ -156,7 +156,7 @@ const Signup = () => {
                                     <input type="password" name='verifPassword' id='verifPassword' className="form-control" onChange={(e) => setCheckPassword(e.target.value)} value= { checkPassword } /> 
                                     <small className="small"></small>
                                 </div>
-                                <div className="row flex-row">
+                                <div className="row flex-row  mt-3">
                                     <div className="d-flex justify-content-center col-6">
                                         <button type='submit' className="btn mt-3 rounded border">Inscription </button>
                                     </div>

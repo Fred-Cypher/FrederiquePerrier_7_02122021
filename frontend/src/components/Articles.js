@@ -4,12 +4,12 @@ import HeaderMessages from "./HeaderMessages";
 //import MessageDisplay from "./MessageDisplay";
 
 
-const Messages = () => {
+const Articles = () => {
 
     return(
         <div>
             <HeaderMessages />
-            <div className="m-4">Affichage des images  <br /> </div>
+            <div className="m-4">Ici seront affichés les articles <br /> </div>
             
         </div>
         )
@@ -17,7 +17,4 @@ const Messages = () => {
 }
 
 
-export default Messages;
-
-
-//map sur data : messages
+export default Articles;
