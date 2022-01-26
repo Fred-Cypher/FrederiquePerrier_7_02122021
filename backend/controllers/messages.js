@@ -39,7 +39,7 @@ exports.getMessageByUser = async(req, res, next) => {
 
 // Créer un message
 
-exports.createMessage = async(req, res, next) => {
+exports.createMessage = async function createMessage(req, res, next){
     console.log('req.body.title', req.body.title);
     console.log('req.body.description', req.body.description);
     console.log('req.body', req.body);
@@ -49,7 +49,11 @@ exports.createMessage = async(req, res, next) => {
             where: {
                 id: Number(req.params.id)
             }, select: {
-                id: true
+                id: true,
+                title: true,
+                description: true,
+                user_id: true,
+                image_url: true
             }
         })
             if(!userExists){
