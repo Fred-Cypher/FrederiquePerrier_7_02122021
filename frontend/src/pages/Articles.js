@@ -1,7 +1,5 @@
 //import React, { useState} from "react";
-import HeaderMessages from "./HeaderMessages";
-//import Commentary from "./Commentaries";
-//import MessageDisplay from "./MessageDisplay";
+import HeaderMessages from "../components/HeaderMessages";
 
 
 const Articles = () => {

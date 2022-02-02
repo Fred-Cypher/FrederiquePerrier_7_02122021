@@ -1,14 +1,13 @@
 import React, { useState } from "react";
-import Header from "./Header";
-import Messages from './Messages';
+import Header from "../components/Header";
 import '../style/signup.css';
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 
 const Login = () =>{
     localStorage.clear();
     const navigate = useNavigate();
-    const [formSubmit, setFormSubmit] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     
@@ -51,7 +50,7 @@ const Login = () =>{
 
 
         if(validEmail && validpassword){
-            const userLogin = {
+            /* const userLogin = {
                 email: email,
                 password: password
             }
@@ -69,7 +68,7 @@ const Login = () =>{
             console.log('fetchdata : ', fetchData);
             
 
-            fetch('http://localhost:5500/api/auth/login', fetchData)
+            fetch('http://localhost:5500/api/users/login', fetchData)
                 .then(response => response.json())
                 .then(data => {
                     console.log('userLogin.email : ', userLogin.email); // OK
@@ -78,69 +77,69 @@ const Login = () =>{
                     console.log('data.first_name : ', data.first_name); // OK
                     console.log('data.last_name : ', data.last_name); // OK
                     console.log('base de données : ', data); // OK
+
                     if(userLogin.email === data.email){
                         console.log('OK')
-                        setFormSubmit(true);
-                        localStorage.setItem('userId', data.id);
-                        localStorage.setItem('userFirstName', data.first_name);
-                        localStorage.setItem('userLastName', data.last_name);
-                        localStorage.setItem('userToken', data.token);                
+                        localStorage.setItem('userToken', data.token);  
+                        navigate("/messages")
+                        alert ('Vous allez être redirigé sur le forum de partage d\'images')
                     } else {
                         console.log('Ça ne fonctionne pas :( ')
-                        setFormSubmit(false)
                         return 'Erreur lors de la connection, veuillez recommencer'
-                    }
-
-                    if(setFormSubmit){
-                        navigate("/messages")
-                        alert ('Vous allez être redirigé sur le forum de partage d\'images') 
-                    } 
-                })
+                    }})
                 .catch((err) => { 
                     console.log(err);
-                    e.preventDefault();
-                });
+                });*/
+
+                const user = { email: email, password: password};
+                console.log('user : ', user);
+
+                axios.post('http://localhost:5500/api/users/login', user)
+                    .then(response => console.log('response : ', response))
+                    .then(data => {
+                        if(email === data.email){
+                            console.log('OK')
+                            localStorage.setItem('userToken', data.token);  
+                            navigate("/messages")
+                            alert ('Vous allez être redirigé sur le forum de partage d\'images')
+                        } else {
+                            console.log('Ça ne fonctionne pas :( ')
+                            return 'Erreur lors de la connection, veuillez recommencer'
+                        }})
+                    .catch((err) => {
+                        console.log(err);
+                    });
         }
     };
 
-// Trouver pour rediriger vers la page Messages au lieu d'afficher le composants sur la page Login (ou Signup si j'y suis encore)
-
     return(
         <>
-        { formSubmit? (
-            <>
-                <Messages />
-            </>
-        ) : (
-            <div>
-                <Header />
-                <div className="d-flex justify-content-center">
-                    <div className="card pb-3 pt-3 m-5 col-md-8 d-flex align-items-center">
-                        <div className="mt-3 mb-4 h3">Connexion au réseau social de Groupomania</div>
-                        <form action="" onSubmit={ handleLogin } className="form col-md-10 col-lg-7">
-                            <div className="form-group">
-                                <label htmlFor='email' className="form-label">Adresse e-mail : </label>
-                                <input type='text' name='email' id='email' className="form-control" onChange={(e) => setEmail(e.target.value)} value= { email } required /> 
-                                <small className="small"></small>
+            <Header />
+            <div className="d-flex justify-content-center">
+                <div className="card pb-3 pt-3 m-5 col-md-8 d-flex align-items-center">
+                    <div className="mt-3 mb-4 h3">Connexion au réseau social de Groupomania</div>
+                    <form action="" onSubmit={ handleLogin } className="form col-md-10 col-lg-7">
+                        <div className="form-group">
+                            <label htmlFor='email' className="form-label">Adresse e-mail : </label>
+                            <input type='text' name='email' id='email' className="form-control" onChange={(e) => setEmail(e.target.value)} value= { email } required /> 
+                            <small className="small"></small>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor='password' className="form-label"> Mot de passe : </label>
+                            <input type="password" name='password' id='password' className="form-control" onChange={(e) => setPassword(e.target.value)} value= { password } required /> 
+                            <small className="small"></small>
+                        </div>
+                        <div className="row flex-row mt-3">
+                            <div className="d-flex justify-content-center col-6">
+                                <button type='submit' className="btn mt-3 rounded border">Connexion </button>
                             </div>
-                            <div className="form-group">
-                                <label htmlFor='password' className="form-label"> Mot de passe : </label>
-                                <input type="password" name='password' id='password' className="form-control" onChange={(e) => setPassword(e.target.value)} value= { password } required /> 
-                                <small className="small"></small>
+                            <div className="d-flex justify-content-center col-6">
+                                <Link to='/signup'><button className="btn mt-3 rounded border">Pas encore inscrit ?</button></Link>
                             </div>
-                            <div className="row flex-row mt-3">
-                                <div className="d-flex justify-content-center col-6">
-                                    <button type='submit' className="btn mt-3 rounded border">Connexion </button>
-                                </div>
-                                <div className="d-flex justify-content-center col-6">
-                                    <Link to='/signup'><button className="btn mt-3 rounded border">Pas encore inscrit ?</button></Link>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-        )}
         </>
     )
 };

@@ -10,30 +10,64 @@ exports.allUsers = async function allUser(req, res, next){
     res.send(JSON.stringify({"status": 200, "error": null, 'response': allUsers}));
 };
 
+// Récupération d'un utilisateur
+
+exports.onUser = async function oneUser(req, res, next){
+    let userId = parseInt(req.params.id)
+
+    if(!userId){
+        return res.status(400).json({ message: 'Cet utilisateur n\'existe pas'})
+    }
+
+    try{
+        const user = await prisma.user.findUnique({
+            where:{
+                id: Number(userId)
+            }
+        })
+
+        if ( user === null){
+            return res.status(404).json({ message: 'Cet utilisateur n\'existe pas'})
+        }
+
+        return res.json({ data: user})
+
+    }catch(err){
+        return res.status(500).json({ message: 'Erreur lors de la connexion avec la base de données'})
+    }
+}
+
 // Enregistrement d'un utilisateur avec hash  
 
 exports.signup = async function signup(req, res, next){
+    
+    const { first_name, last_name, email, password} = req.body;
+
+    if(!first_name || !last_name || !email || !password){
+        return res.status(400).json({ message : 'Champs non remplis'})
+    } 
+    
     try{
         const userExists = await prisma.user.findUnique({
             where: {
-                email: String(req.body.email)
+                email: String(email)
             }, select: {
                 email: true
             }
         })
         if(userExists){
-            res.send(JSON.stringify({"status": 404, "error": 'Cet utilisateur existe déjà dans la base de données', "token": null}));
+            res.send(JSON.stringify({"status": 409, "error": 'Cet utilisateur existe déjà dans la base de données', "token": null}));
             return;
         }
 
-        const hash = await bcrypt.hash(req.body.password, 10);
+        const hash = await bcrypt.hash(password, 10);
 
         try{
             const user = await prisma.user.create({
                 data: {
-                    first_name: req.body.first_name,
-                    last_name: req.body.last_name,
-                    email: req.body.email,
+                    first_name: first_name,
+                    last_name: last_name,
+                    email: email,
                     password: hash
                 },
             })
@@ -41,7 +75,7 @@ exports.signup = async function signup(req, res, next){
             res.send(JSON.stringify({'status': 200, "error": null, "response": user.id}))
         }
         catch(e){
-            res.send(JSON.stringify({"status" : 404, "error": 'Erreur lors de l\'enregistrement de l\'utilisateur', 'token': null}))
+            res.send(JSON.stringify({"status" : 500, "error": 'Erreur lors de l\'enregistrement de l\'utilisateur', 'token': null}))
         }
     }
     catch(e){
@@ -52,10 +86,17 @@ exports.signup = async function signup(req, res, next){
 // Connection d'un utilisateur 
 
 exports.login = async function login(req, res, next){
+
+    const { email, password } = req.body;
+
+    if(!email || !password){
+        return res.status(400).json({ message: 'Champs non remplis'})
+    }
+
     try{
         const user = await prisma.user.findUnique({
             where: {
-                email: String(req.body.email) //'email@mail.com2' 
+                email: String(email)
             },
             select: {
                 id: true,
@@ -69,37 +110,41 @@ exports.login = async function login(req, res, next){
         console.log('user : ', user);
 
         if(!user){
-            res.send(JSON.stringify({"status" : 400, "error": 'Cet utilisateur n\'existe pas.', 'token': null}));
+            res.send(JSON.stringify({"status" : 401, "error": 'Cet utilisateur n\'existe pas.', 'token': null}));
             return;
         } else {
             try{
-            const valid = await bcrypt.compare(req.body.password, user.password) //('motdepasse2', '$2b$10$GLW/ngDIDJGihzzwSMRz/eeev4gk4oSLmUh32ylLIGK/EokfGnPvG')
+            const valid = await bcrypt.compare(password, user.password) 
 
             console.log('valid : ', valid);
-            console.log('req.body.password : ', req.body.password);
+            console.log('req.body.password : ', password);
             console.log('user.password : ', user.password);
             console.log('user.id : ', user.id)
 
             if(!valid){
-                res.send(JSON.stringify({"status" : 404, "error": 'Mot de passe incorrect', 'token': null}))
+                res.send(JSON.stringify({"status" : 401, "error": 'Mot de passe incorrect', 'token': null}))
                 return;
             }
 
             const token = jwt.sign({
-                userId: user.id},
+                userId: user.id,
+                email: user.email,
+                first_name: user.first_name,
+                last_name: user.last_name
+            },
                 process.env.TOKEN, 
-                { expiresIn: '24h' }
+                { expiresIn: '1h' }
             );
-            
-            res.send(JSON.stringify({"status": 200, "error": null, "token": token, "email": user.email, "id": user.id, "first_name": user.first_name, "last_name": user.last_name}))
+            console.log('token connexion : ', token)
+            res.send(JSON.stringify({"status": 200, "error": null, "token": token, "email": user.email, "id": user.id, "first_name": user.first_name, "last_name": user.last_name }))
             }
             catch(e){
-                res.send(JSON.stringify({"status" : 401, "error": 'Problème lors de l\'authentification', 'token': null}))
+                res.send(JSON.stringify({"status" : 500, "error": 'Problème lors de l\'authentification', 'token': null}))
             }
         }
     }
     catch(e){
-        res.send(JSON.stringify({"status" : 401, "error": 'Problème lors de la connection', 'token': null}))
+        res.send(JSON.stringify({"status" : 500, "error": 'Problème lors de la connexion', 'token': null}))
     }
     
 };
@@ -109,7 +154,7 @@ exports.login = async function login(req, res, next){
 exports.delete = async(req, res, next) => {
     const userExists = await prisma.user.findUnique({
         where: {
-            id: req.params.id // 2
+            id: Number(req.params.id) 
         },
         select: {
             id: true
@@ -121,7 +166,7 @@ exports.delete = async(req, res, next) => {
 
     const deleteUSer = await prisma.user.delete({
         where: {
-            id: req.params.id // 2
+            id: Number(req.params.id )
         },
     })
     res.json(deleteUSer)
@@ -130,29 +175,55 @@ exports.delete = async(req, res, next) => {
 // Modification d'un utilisateur
 
 exports.modifyUser = async(req, res, next) => {
-    const userExists = await prisma.user.findUnique({
-        where: {
-            id: req.params.id // 5
-        },
-        select: {
-            password: true 
-        }
-    })
 
-    if(!userExists){
-        return res.status(400).json({ message : 'Cet utilisateur n\'existe pas dans la base de données'})
+    let userId = parseInt(req.params.id);
+
+    if(!userId){
+        return res.status(400).json({ message: 'Paramètre inconnu'})
     }
 
-    const hash = await bcrypt.hash(req.body.password, 10); // 'password'
+    try{
+        const user = await prisma.user.findUnique({
+            where: {
+                id: Number(req.params.id) 
+            },
+            select: {
+                email: true,
+                password: true 
+            }
+        })
 
-    const newPassword = await prisma.user.update({
-        where: {
-            id: req.params.id  // 5
-        },
-        data: {
-            password: hash
+        if(!user){
+            return res.status(400).json({ message : 'Cet utilisateur n\'existe pas dans la base de données'})
         }
-    })
 
-    res.json(newPassword)
+        const hash = await bcrypt.hash(req.body.password, 10); 
+
+        const modifiedUser = await prisma.user.update({
+            where: {
+                id: Number(req.params.id)
+            },
+            data: {
+                email: req.body.email,
+                password: hash
+            }
+        })
+        res.send(JSON.stringify({"status": 200, "error": null, "response": modifiedUser}));
+    } catch(err){
+        return res.status(500).json({ message: 'Erreur lors de la connexion à la base de donnée' })
+    }
 };
+
+exports.refresh = async(req, res, next) => {
+    const refresToken = jwt.sign({
+        userId: user.id,
+        email: user.email,
+        first_name: user.first_name,
+        last_name: user.last_name
+    },
+        process.env.TOKEN_REFRESH, 
+        { expiresIn: '1h' }
+    );
+
+    return refresToken
+}

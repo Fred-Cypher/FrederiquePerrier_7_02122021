@@ -93,7 +93,7 @@ exports.createMessage = async function createMessage(req, res, next){
 exports.modifyMessage = async(req, res, next) => {
     const messageExists = await prisma.message.findUnique({
         where: {
-            id: req.params.id // 1
+            id: Number(req.params.id) // 1
         },
         select: {
             id: true
@@ -106,7 +106,7 @@ exports.modifyMessage = async(req, res, next) => {
 
     const changeMessage = await prisma.message.update({
         where: {
-            id: req.params.id  // 1
+            id: Number(req.params.id)  // 1
         },
         data: {
             title: req.body.title, // 'Changement titre'
@@ -121,7 +121,7 @@ exports.modifyMessage = async(req, res, next) => {
 exports.deleteMessage = async(req, res, next) => {
     const messageExists = await prisma.message.findUnique({
         where: {
-            id: req.params.id // 2
+            id: Number(req.params.id) // 2
         },
         select: {
             id: true
