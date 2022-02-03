@@ -136,7 +136,7 @@ exports.login = async function login(req, res, next){
                 { expiresIn: '1h' }
             );
             console.log('token connexion : ', token)
-            res.send(JSON.stringify({"status": 200, "error": null, "token": token, "email": user.email, "id": user.id, "first_name": user.first_name, "last_name": user.last_name }))
+            res.send(JSON.stringify({"status": 200, "error": null, "token": token, "user": user }))
             }
             catch(e){
                 res.send(JSON.stringify({"status" : 500, "error": 'Problème lors de l\'authentification', 'token': null}))
@@ -179,7 +179,7 @@ exports.modifyUser = async(req, res, next) => {
     let userId = parseInt(req.params.id);
 
     if(!userId){
-        return res.status(400).json({ message: 'Paramètre inconnu'})
+        return res.status(400).json({ message: 'Paramètres inconnus'})
     }
 
     try{

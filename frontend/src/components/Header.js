@@ -17,7 +17,7 @@ function Header(){
                         <Link to='/signup' className="nav-link">Inscription</Link>
                     </li>
                     <li className="nav-item">
-                        <Link to='/login' className="nav-link">Connection</Link>
+                        <Link to='/login' className="nav-link">Connexion</Link>
                     </li>
                 </div>
             </div>

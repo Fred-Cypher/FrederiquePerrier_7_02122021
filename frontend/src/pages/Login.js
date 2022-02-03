@@ -92,14 +92,22 @@ const Login = () =>{
                 });*/
 
                 const user = { email: email, password: password};
+            /* const options = { 
+                    headers : { 
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer'
+                    } }*/
                 console.log('user : ', user);
 
                 axios.post('http://localhost:5500/api/users/login', user)
-                    .then(response => console.log('response : ', response))
-                    .then(data => {
-                        if(email === data.email){
+                    .then(response => {
+                        console.log('response : ', response)
+                        console.log('response.email : ', response.data.user.email)
+                        console.log('response.token : ', response.data.token)
+                        if(email === response.data.user.email){
                             console.log('OK')
-                            localStorage.setItem('userToken', data.token);  
+                            localStorage.setItem('userToken', response.data.token);
+                            localStorage.setItem('userId', response.data.user.id);
                             navigate("/messages")
                             alert ('Vous allez être redirigé sur le forum de partage d\'images')
                         } else {

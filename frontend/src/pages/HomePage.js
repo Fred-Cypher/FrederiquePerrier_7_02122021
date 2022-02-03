@@ -12,7 +12,7 @@ function HomePage(){
                     <h1 className="col-12 p-2 text-center">Bienvenue sur le réseau social de Groupomania</h1>
                     <div className="row flex-row">
                         <div className="d-flex justify-content-center col-6 p-3">
-                            <Link to='/login'><button className="btn mt-3 rounded border">Connection</button></Link>
+                            <Link to='/login'><button className="btn mt-3 rounded border">Connexion</button></Link>
                         </div>
                         <div className="d-flex justify-content-center col-6 p-3">
                             <Link to='/signup'><button className="btn mt-3 rounded border">Inscription</button></Link>

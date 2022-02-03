@@ -8,8 +8,8 @@ import NewArticle from "../pages/NewArticle";
 import NewMessage from "../pages/NewMessage";
 import Signup from "../pages/Signup";
 import Profil from "../pages/Profil";
-import Logout from "../pages/Logout";
 import NotFound from "../pages/NotFound";
+import DeleteAccount from "../pages/DeleteAccount";
 
 function App() {
   return (
@@ -22,7 +22,7 @@ function App() {
       <Route path="articles" element={<Articles />} />
       <Route path="newarticle" element={<NewArticle />} />
       <Route path="profil" element={<Profil />} />
-      <Route path="logout" element={<Logout />} />
+      <Route path="delete" element={<DeleteAccount />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

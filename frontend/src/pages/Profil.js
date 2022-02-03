@@ -1,15 +1,69 @@
+import axios from "axios";
 import React, { useState } from "react";
-//import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import HeaderMessages from "../components/HeaderMessages";
 
 
 const Profil = () => {
-    //const navigate = useNavigate();
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const userToken = localStorage.getItem('userToken');
+    const userId = localStorage.getItem('userId');
+
+    console.log(userToken);
+    console.log(userId);
+
     const handleChange = (e) =>{
         e.preventDefault();
+
+        const validInput = function (inputField, inputValue, regex, invalidMessage) {
+            const small = inputField.nextElementSibling;
+
+            if (regex.test(inputValue.trim())) {
+                small.textContent = '✅ OK';
+                small.classList.remove('text-danger');
+                small.classList.add('text-success');
+                inputField.style.borderColor = 'green';
+                return true;
+            } else if (!regex.test(inputValue.trim())) {
+                small.textContent = invalidMessage;
+                small.classList.remove('text-success');
+                small.classList.add('text-danger');
+                inputField.style.borderColor = 'red';
+                return false;
+            }
+        };
+
+        // Préparation de la validation de l'adresse mail
+        const emailRegex = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,5}$', 'g');
+        const emailInput = document.getElementById('email');
+        const emailInvalid = '⛔ Veuillez entrer une adresse mail valide';
+
+        // Préparation de la validation du mot de passe
+        const passwordRegex = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$', 'g')
+        const passwordInput = document.getElementById('password');
+        const passwordInvalid= '⛔ Le mot de passe doit comporter au minimum 8 caractères dont une majucule, une minuscule, un chiffre et un caractère spécial';
+
+         // Validation des différents champs du formulaire
+        const validEmail = validInput(emailInput, email, emailRegex, emailInvalid);
+        const validpassword = validInput(passwordInput, password, passwordRegex, passwordInvalid);
+
+        console.log('validEmail', validEmail);
+        console.log('validPassword', validpassword);
+
+        if(validEmail && validpassword){
+            axios.patch('http://localhost:5500/api/users/'+userId, {
+                    email: email,
+                    password: password
+                })
+                .then(function (response){
+                    console.log(response)
+                    navigate('/messages')
+                })
+        }
+
     }
 
     return(
@@ -37,15 +91,7 @@ const Profil = () => {
                         </div>
                     </form>
                 </div>
-                <div className="card pb-3 pt-3 m-5 col-8 d-flex align-items-center border-danger">
-                    <div className="mt-3 mb-4 h3 text-center">Suppression du compte</div>
-                    <div className="mt-3 mb-4 h4 text-center text-danger">Attention, la suppression du compte est définitive</div>
-                    <div className="row flex-row justify-content-center mt-3">
-                            <div className="d-flex align-items-center justify-content-center col-10">
-                                <button type='submit' className="btn mt-3 rounded border-danger">Supprimer mon compte </button>
-                            </div>
-                        </div>
-                </div>
+                
             </div>
         </div>
     )
