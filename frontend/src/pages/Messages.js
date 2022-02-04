@@ -27,11 +27,11 @@ const Messages = () => {
             }
         }
 
-            axios.get('http://localhost:5500/api/messages', options)
-                .then(response => setMessages(response.data))
-                .catch(error => { 
-                    console.log(error)
-                });
+        axios.get('http://localhost:5500/api/messages', options)
+            .then(response => setMessages(response.data))
+            .catch(error => { 
+                console.log(error)
+            });
     }, []);
     
     if(!messages) return null;
@@ -41,19 +41,22 @@ const Messages = () => {
         <div>
             <HeaderMessages />
             <div className="m-4">Affichage des images  <br /> </div>
-            {/*<ul {messages.map(message =>
-                <li key={message.id}>
-                    <MessageDisplay 
-                        title={title}
-                        description={description}
-                        user={user}
-                        image_url={image_url}/>
-            </li>)}/>*/}
+            {/*<div className="card" key={messages.id}>
+                {messages.map((message) => {
+                    return(
+                        <li>
+                            <div>{message.title}</div>
+                            <div>{message.description}</div>
+                            <div>{message.user} <span>{message.created_at}</span></div>
+                            <img src={message.image_url} alt={message.title} />
+                        </li>
+                    )
+                })}
+            </div>*/}
         </div>
         )
 
 };
-
 
 export default Messages;
 
