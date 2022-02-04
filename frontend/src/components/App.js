@@ -10,6 +10,7 @@ import Signup from "../pages/Signup";
 import Profil from "../pages/Profil";
 import NotFound from "../pages/NotFound";
 import DeleteAccount from "../pages/DeleteAccount";
+import '../style/App.css';
 
 function App() {
   return (

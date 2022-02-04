@@ -11,8 +11,16 @@ const DeleteAccount = () => {
         
         //const userToken = localStorage.getItem('userToken');
         const userId = localStorage.getItem('userId');
-    
-        axios.delete('http://localhost:5500/api/users/'+userId)
+
+        const token = localStorage.getItem('userToken'); 
+        const options = {
+            headers: {
+                'Accept': 'multipart/form-data',
+                'Authorization': 'Bearer ' + token
+            }
+        }
+
+        axios.delete('http://localhost:5500/api/users/'+userId, options)
             .then(function (response){
                 console.log(response)
                 localStorage.clear();

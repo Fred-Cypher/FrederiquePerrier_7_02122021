@@ -16,13 +16,18 @@ const Messages = () => {
             'Authorization': 'Bearer ' + token
         }
     }*/
+    
 
     useEffect(() => {
-        /*fetch('http://localhost:5500/api/messages', fetchMessage)
-            .then(response => response.json())
-            .then(data => console.log(data))
-            .catch(error => console.log(error))*/
-            axios.get('http://localhost:5500/api/messages')
+        const token = localStorage.getItem('userToken'); 
+        const options = {
+            headers: {
+                'Accept': 'multipart/form-data',
+                'Authorization': 'Bearer ' + token
+            }
+        }
+
+            axios.get('http://localhost:5500/api/messages', options)
                 .then(response => setMessages(response.data))
                 .catch(error => { 
                     console.log(error)

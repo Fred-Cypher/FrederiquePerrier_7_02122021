@@ -54,10 +54,19 @@ const Profil = () => {
         console.log('validPassword', validpassword);
 
         if(validEmail && validpassword){
-            axios.patch('http://localhost:5500/api/users/'+userId, {
+            const token = localStorage.getItem('userToken'); 
+            const options = {
+                headers: {
+                    'Accept': 'multipart/form-data',
+                    'Authorization': 'Bearer ' + token
+                }
+            }
+            const user = {
                     email: email,
                     password: password
-                })
+                }
+                
+            axios.patch('http://localhost:5500/api/users/'+userId, user, options)
                 .then(function (response){
                     console.log(response)
                     navigate('/messages')
@@ -69,11 +78,11 @@ const Profil = () => {
     return(
         <div>
             <HeaderMessages />
-            <div className="d-flex flex-column justify-content-center">
-                <div className="card pb-3 pt-3 m-5 col-md-8 d-flex align-items-center">
+            <div className="d-flex flex-column align-items-center justify-content-center">
+                <div className="card pb-3 pt-3 md-5 col-md-8 d-flex align-items-center">
                     <div className="mt-3 mb-4 h3 text-center">Modification du profil</div>
                     <div className="mt-3 mb-4 h5 text-center">Seuls l'adresse mail et le mot de passe peuvent être modifiés</div>
-                    <form action="" onSubmit={ handleChange } className="form col-md-10 col-lg-7">
+                    <form action="" onSubmit={ handleChange } className="form col-11 col-md-10 col-lg-7">
                         <div className="form-group">
                             <label htmlFor='email' className="form-label">Adresse e-mail : </label>
                             <input type='text' name='email' id='email' className="form-control" onChange={(e) => setEmail(e.target.value)} value= { email } required /> 

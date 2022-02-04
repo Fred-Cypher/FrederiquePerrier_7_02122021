@@ -79,12 +79,13 @@ const Signup = () => {
                 verifPassword.style.borderColor = 'red';
             }
             else {
-                axios.put('http://localhost:5500/api/users/signup', {
-                        first_name: firstName, 
+                const user = {
+                    first_name: firstName, 
                         last_name: lastName, 
                         email: email,
                         password: password
-                    })
+                }
+                axios.put('http://localhost:5500/api/users/signup', user)
                     .then(function (response) {
                         console.log(response);
                     })

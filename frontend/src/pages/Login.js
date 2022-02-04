@@ -92,14 +92,16 @@ const Login = () =>{
                 });*/
 
                 const user = { email: email, password: password};
-            /* const options = { 
+                
+                const options = { 
                     headers : { 
                         'Content-Type': 'application/json',
-                        'Authorization': 'Bearer'
-                    } }*/
+                        'Authorization': 'Bearer token'
+                    } }
                 console.log('user : ', user);
+                console.log('options : ', options);
 
-                axios.post('http://localhost:5500/api/users/login', user)
+                axios.post('http://localhost:5500/api/users/login', user, options)
                     .then(response => {
                         console.log('response : ', response)
                         console.log('response.email : ', response.data.user.email)

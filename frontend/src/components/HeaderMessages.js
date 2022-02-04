@@ -14,7 +14,7 @@ function HeaderMessages(){
     }
 
     return(
-        <div className="d-flex flex-column border-bottom align-items-center justify-content-center p-3 col-12">
+        <div className="d-flex flex-column align-items-center justify-content-center p-3 col-12">
             <div className="d-flex flex-column align-items-center justify-content-between p-3 col-12 col-md-10 col-lg-8">
                 <img src={logo} alt='Groupomania' className="img-fluid"/>
                 <button onClick={ handleClick } className="btn mt-3 ms-3 rounded text-center logout">Déconnexion</button>
