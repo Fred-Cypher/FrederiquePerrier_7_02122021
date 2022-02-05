@@ -27,7 +27,7 @@ exports.createComment = async(req, res, next) => {
 exports.getCommentsByMessage = async(req, res, next) => {
     const messageComments = await prisma.comment.findMany({
         where: {
-            image_id: req.params.id // 3
+            image_id: req.params.id
         }, select: {
             commentary: true,
             created_at: true
@@ -41,7 +41,7 @@ exports.getCommentsByMessage = async(req, res, next) => {
 exports.getCommentsByUser = async(req, res, next) => {
     const userComments = await prisma.comment.findMany({
         where: {
-            user_id: req.params.id // 3 
+            user_id: req.params.id 
         }, select: {
             commentary: true,
             created_at: true
@@ -55,7 +55,7 @@ exports.getCommentsByUser = async(req, res, next) => {
 exports.getOneComment = async(req, res, next) => {
     const oneComment = await prisma.comment.findUnique({
         where: {
-            id: req.params.id // 5 
+            id: req.params.id
         }
     })
     res.json(oneComment)
@@ -66,7 +66,7 @@ exports.getOneComment = async(req, res, next) => {
 exports.modifyComment = async(req, res, next) => {
     const commentExists = await prisma.comment.findUnique({
         where: {
-            id: req.params.id // 3
+            id: req.params.id 
         }, 
         select: {
             id: true
@@ -79,10 +79,10 @@ exports.modifyComment = async(req, res, next) => {
 
     const changeComment = await prisma.comment.update({
         where: {
-            id: req.params.id //3
+            id: req.params.id
         },
         data: {
-            commentary: req.body.commentary // 'Changement commentaire 2'
+            commentary: req.body.commentary 
         }
     })
     res.json(changeComment)
@@ -93,7 +93,7 @@ exports.modifyComment = async(req, res, next) => {
 exports.deleteComment = async(req, res, next) => {
     const commentExists = await prisma.comment.findUnique({
         where: {
-            id: req.params.id // 4
+            id: req.params.id 
         },
         select: {
             id :true
@@ -106,7 +106,7 @@ exports.deleteComment = async(req, res, next) => {
 
     const deleteOneComment = await prisma.comment.delete({
         where: {
-            id: req.params.id // 4
+            id: req.params.id 
         }
     })
     res.json(deleteOneComment)

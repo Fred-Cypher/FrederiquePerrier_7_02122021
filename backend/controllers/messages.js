@@ -56,20 +56,21 @@ exports.createMessage = async function createMessage(req, res, next){
                 image_url: true
             }
         })
-            if(!userExists){
-                res.send(JSON.stringify({"status": 404, "error": 'Cet utilisateur n\'existe pas', "token": null}));
-                return;
-            }
+
+        if(!userExists){
+            res.send(JSON.stringify({"status": 404, "error": 'Cet utilisateur n\'existe pas', "token": null}));
+            return;
+        }
 
         try{
             const message = await prisma.message.create({
                 data: {
-                    title: req.body.title,//'Etudes',
-                    image_url: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`, //'https://cdn.pixabay.com/photo/2014/12/29/14/48/cat-582847_960_720.jpg',
-                    description: req.boby.description,//'Les études, ça fatigue', 
+                    title: req.body.title,
+                    image_url: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+                    description: req.boby.description, 
                     user: {
                         connect: {
-                            id:   user_id //2
+                            id:   user_id
                         }
                     }
                 }
@@ -106,11 +107,11 @@ exports.modifyMessage = async(req, res, next) => {
 
     const changeMessage = await prisma.message.update({
         where: {
-            id: Number(req.params.id)  // 1
+            id: Number(req.params.id) 
         },
         data: {
-            title: req.body.title, // 'Changement titre'
-            description: req.boby.description // 'Changement description' 
+            title: req.body.title, 
+            description: req.boby.description 
         }
     })
     res.json(changeMessage)
@@ -121,7 +122,7 @@ exports.modifyMessage = async(req, res, next) => {
 exports.deleteMessage = async(req, res, next) => {
     const messageExists = await prisma.message.findUnique({
         where: {
-            id: Number(req.params.id) // 2
+            id: Number(req.params.id) 
         },
         select: {
             id: true
@@ -134,7 +135,7 @@ exports.deleteMessage = async(req, res, next) => {
 
     const deleteOneMessage = await prisma.message.delete({
         where: {
-            id: req.params.id // 2
+            id: req.params.id 
         }
     })
     res.json(deleteOneMessage)

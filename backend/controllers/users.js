@@ -13,15 +13,17 @@ exports.allUsers = async function allUser(req, res, next){
 // Récupération d'un utilisateur
 
 exports.onUser = async function oneUser(req, res, next){
+    // Vérification de la présence et de la forme de l'id de l'utilisateur
     let userId = parseInt(req.params.id)
 
     if(!userId){
         return res.status(400).json({ message: 'Cet utilisateur n\'existe pas'})
     }
 
+    // Récupération de l'utilisateur
     try{
         const user = await prisma.user.findUnique({
-            where:{
+            where: {
                 id: Number(userId)
             }
         })
@@ -32,10 +34,11 @@ exports.onUser = async function oneUser(req, res, next){
 
         return res.json({ data: user})
 
-    }catch(err){
+    }
+    catch(err){
         return res.status(500).json({ message: 'Erreur lors de la connexion avec la base de données'})
     }
-}
+};
 
 // Enregistrement d'un utilisateur avec hash  
 
@@ -43,11 +46,13 @@ exports.signup = async function signup(req, res, next){
     
     const { first_name, last_name, email, password} = req.body;
 
+    // Vérification que tous les chmaps sont remplis
     if(!first_name || !last_name || !email || !password){
         return res.status(400).json({ message : 'Champs non remplis'})
     } 
     
     try{
+        // Vérification que l'email n'existe pas déjà dans la BDD
         const userExists = await prisma.user.findUnique({
             where: {
                 email: String(email)
@@ -55,14 +60,17 @@ exports.signup = async function signup(req, res, next){
                 email: true
             }
         })
+
         if(userExists){
             res.send(JSON.stringify({"status": 409, "error": 'Cet utilisateur existe déjà dans la base de données', "token": null}));
             return;
         }
 
+        // Hashage du mot de passe
         const hash = await bcrypt.hash(password, 10);
 
         try{
+            //Création de l'utilisateur
             const user = await prisma.user.create({
                 data: {
                     first_name: first_name,
@@ -89,11 +97,13 @@ exports.login = async function login(req, res, next){
 
     const { email, password } = req.body;
 
+    // Vérification que les chmaps sont bien remplis
     if(!email || !password){
         return res.status(400).json({ message: 'Champs non remplis'})
     }
 
     try{
+        //  Recherche de l'utilisateur dans la BDD par son adresse email
         const user = await prisma.user.findUnique({
             where: {
                 email: String(email)
@@ -114,6 +124,7 @@ exports.login = async function login(req, res, next){
             return;
         } else {
             try{
+            // Vérification du mot de passe
             const valid = await bcrypt.compare(password, user.password) 
 
             console.log('valid : ', valid);
@@ -126,6 +137,7 @@ exports.login = async function login(req, res, next){
                 return;
             }
 
+            // Création du token de connexion 
             const token = jwt.sign({
                 userId: user.id,
                 email: user.email,
@@ -149,9 +161,10 @@ exports.login = async function login(req, res, next){
     
 };
 
-// Suppression simple d'un utilisateur 
+// Suppression définitive d'un utilisateur 
 
 exports.delete = async(req, res, next) => {
+    // Recherche de l'utilisateur dans la BDD par son id
     const userExists = await prisma.user.findUnique({
         where: {
             id: Number(req.params.id) 
@@ -160,10 +173,12 @@ exports.delete = async(req, res, next) => {
             id: true
         }
     })
+
     if(!userExists){
         return res.status(400).json({ message : 'Cet utilisateur n\'existe pas dans la base de données'})
     }
 
+    // Suppression définitive de l'utilisateur
     const deleteUSer = await prisma.user.delete({
         where: {
             id: Number(req.params.id )
@@ -175,7 +190,7 @@ exports.delete = async(req, res, next) => {
 // Modification d'un utilisateur
 
 exports.modifyUser = async(req, res, next) => {
-
+// Vérification de la présence et de la forme de l'id de l'utilisateur
     let userId = parseInt(req.params.id);
 
     if(!userId){
@@ -183,6 +198,7 @@ exports.modifyUser = async(req, res, next) => {
     }
 
     try{
+        // Récupération de l'utilisateur dans la BDD par son id
         const user = await prisma.user.findUnique({
             where: {
                 id: Number(req.params.id) 
@@ -197,8 +213,10 @@ exports.modifyUser = async(req, res, next) => {
             return res.status(400).json({ message : 'Cet utilisateur n\'existe pas dans la base de données'})
         }
 
+        // Hashage du mot de passe
         const hash = await bcrypt.hash(req.body.password, 10); 
 
+        // Modification de l'adresse email et du mot de passe de l'utilisateur
         const modifiedUser = await prisma.user.update({
             where: {
                 id: Number(req.params.id)
@@ -209,11 +227,13 @@ exports.modifyUser = async(req, res, next) => {
             }
         })
         res.send(JSON.stringify({"status": 200, "error": null, "response": modifiedUser}));
-    } catch(err){
+    } 
+    catch(err){
         return res.status(500).json({ message: 'Erreur lors de la connexion à la base de donnée' })
     }
 };
 
+// Création du refreshToken
 exports.refresh = async(req, res, next) => {
     const refresToken = jwt.sign({
         userId: user.id,
@@ -226,4 +246,4 @@ exports.refresh = async(req, res, next) => {
     );
 
     return refresToken
-}
+};

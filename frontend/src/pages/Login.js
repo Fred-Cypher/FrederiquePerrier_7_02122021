@@ -4,14 +4,12 @@ import '../style/signup.css';
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-
 const Login = () =>{
     localStorage.clear();
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     
-
     const handleLogin = (e) =>{
         e.preventDefault();
         
@@ -50,75 +48,38 @@ const Login = () =>{
 
 
         if(validEmail && validpassword){
-            /* const userLogin = {
-                email: email,
-                password: password
-            }
-
-            console.log('userLogin :' , userLogin);
-
-            const fetchData = {
-                method: 'POST',
-                body: JSON.stringify(userLogin),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            };
-
-            console.log('fetchdata : ', fetchData);
+            const user = { email: email, password: password};
             
+            const options = { 
+                headers : { 
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer token'
+                }};
+            console.log('user : ', user);
+            console.log('options : ', options);
 
-            fetch('http://localhost:5500/api/users/login', fetchData)
-                .then(response => response.json())
-                .then(data => {
-                    console.log('userLogin.email : ', userLogin.email); // OK
-                    console.log('userLogin.password :', userLogin.password); // OK
-                    console.log('data.email : ', data.email); // OK
-                    console.log('data.first_name : ', data.first_name); // OK
-                    console.log('data.last_name : ', data.last_name); // OK
-                    console.log('base de données : ', data); // OK
-
-                    if(userLogin.email === data.email){
+            axios.post('http://localhost:5500/api/users/login', user, options)
+                .then(response => {
+                    console.log('response : ', response)
+                    console.log('response.email : ', response.data.user.email)
+                    console.log('response.token : ', response.data.token)
+                    if(email === response.data.user.email){
                         console.log('OK')
-                        localStorage.setItem('userToken', data.token);  
+                        localStorage.setItem('userToken', response.data.token);
+                        localStorage.setItem('userId', response.data.user.id);
                         navigate("/messages")
                         alert ('Vous allez être redirigé sur le forum de partage d\'images')
                     } else {
                         console.log('Ça ne fonctionne pas :( ')
                         return 'Erreur lors de la connection, veuillez recommencer'
-                    }})
-                .catch((err) => { 
+                    }
+                })
+                .catch((err) => {
                     console.log(err);
-                });*/
-
-                const user = { email: email, password: password};
-                
-                const options = { 
-                    headers : { 
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer token'
-                    } }
-                console.log('user : ', user);
-                console.log('options : ', options);
-
-                axios.post('http://localhost:5500/api/users/login', user, options)
-                    .then(response => {
-                        console.log('response : ', response)
-                        console.log('response.email : ', response.data.user.email)
-                        console.log('response.token : ', response.data.token)
-                        if(email === response.data.user.email){
-                            console.log('OK')
-                            localStorage.setItem('userToken', response.data.token);
-                            localStorage.setItem('userId', response.data.user.id);
-                            navigate("/messages")
-                            alert ('Vous allez être redirigé sur le forum de partage d\'images')
-                        } else {
-                            console.log('Ça ne fonctionne pas :( ')
-                            return 'Erreur lors de la connection, veuillez recommencer'
-                        }})
-                    .catch((err) => {
-                        console.log(err);
-                    });
+                });
+        }
+        else {
+            alert ('Erreur d\'adresse email ou de mot de passe')
         }
     };
 

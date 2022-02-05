@@ -4,19 +4,8 @@ import axios from "axios";
 //import MessageDisplay from "../components/MessageDisplay";
 //import Commentary from "./Commentaries";
 
-
 const Messages = () => {
     const [messages, setMessages] = useState([]);
-
-    //const token = localStorage.getItem('userToken');
-    /*let fetchMessage = {
-        method: 'GET',
-        headers: {
-            'Accept': 'multipart/form-data',
-            'Authorization': 'Bearer ' + token
-        }
-    }*/
-    
 
     useEffect(() => {
         const token = localStorage.getItem('userToken'); 
@@ -36,7 +25,6 @@ const Messages = () => {
     
     if(!messages) return null;
 
-
     return(
         <div>
             <HeaderMessages />
@@ -55,7 +43,6 @@ const Messages = () => {
             </div>*/}
         </div>
         )
-
 };
 
 export default Messages;

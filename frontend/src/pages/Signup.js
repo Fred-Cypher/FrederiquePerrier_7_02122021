@@ -1,7 +1,6 @@
 import React from "react";
 import { useState } from "react";
 import Header from "../components/Header";
-import '../style/signup.css';
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -81,9 +80,9 @@ const Signup = () => {
             else {
                 const user = {
                     first_name: firstName, 
-                        last_name: lastName, 
-                        email: email,
-                        password: password
+                    last_name: lastName, 
+                    email: email,
+                    password: password
                 }
                 axios.put('http://localhost:5500/api/users/signup', user)
                     .then(function (response) {
@@ -98,8 +97,6 @@ const Signup = () => {
             }
         }
     }
-
-    // Renvoi vers la page de Login et formulaire d'inscription
 
     return (
         <div>

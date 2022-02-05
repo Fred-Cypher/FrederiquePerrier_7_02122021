@@ -11,7 +11,7 @@ function HeaderMessages(){
     const handleClick = () =>{
         localStorage.clear();
         navigate('/');
-    }
+    };
 
     return(
         <div className="d-flex flex-column align-items-center justify-content-center p-3 col-12">
@@ -39,7 +39,6 @@ function HeaderMessages(){
                 </ul> 
             </div>       
         </div>
-        
     )
 };
 

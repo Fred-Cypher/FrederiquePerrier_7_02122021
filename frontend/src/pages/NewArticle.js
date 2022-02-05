@@ -32,7 +32,7 @@ const NewArticle = () => {
 
             console.log('token : ', token);
 
-            let fethArticle = {
+            let fetchArticle = {
                 method : 'POST',
                 body: JSON.stringify(article),
                 headers: {
@@ -40,9 +40,9 @@ const NewArticle = () => {
                 }
             }
 
-            console.log('fetchArticle : ', fethArticle)
+            console.log('fetchArticle : ', fetchArticle)
 
-            fetch('http://localhost:5500/api/articles', fethArticle)
+            fetch('http://localhost:5500/api/articles', fetchArticle)
                 .then(response => response.json())
                 .then(() => {
                     navigate('/articles')
@@ -85,6 +85,5 @@ const NewArticle = () => {
         </>
     )
 };
-
 
 export default NewArticle;

@@ -44,26 +44,27 @@ exports.createArticle = async(req, res, next) => {
     console.log('req.body', req.body);*/
 
     try{
-        const userExists = await prisma.article.findUnique({
+        const userExists = await prisma.user.findUnique({
             where: {
                 id: Number(req.params.id)
             }, select: {
                 id: true
             }
         })
-            if(!userExists){
-                res.send(JSON.stringify({"status": 404, "error": 'Cet utilisateur n\'existe pas', "token": null}));
-                return;
-            }
+
+        if(!userExists){
+            res.send(JSON.stringify({"status": 404, "error": 'Cet utilisateur n\'existe pas', "token": null}));
+            return;
+        }
 
         try{
             const article = await prisma.article.create({
                 data: {
-                    title: req.body.title,//'Etudes',
-                    description: req.boby.description,//'Les études, ça fatigue', 
+                    title: req.body.title,
+                    description: req.boby.description,
                     user: {
                         connect: {
-                            id:   user_id //2
+                            id:   user_id 
                         }
                     }
                 }
@@ -87,7 +88,7 @@ exports.createArticle = async(req, res, next) => {
 exports.modifyArticle = async(req, res, next) => {
     const articleExists = await prisma.article.findUnique({
         where: {
-            id: req.params.id // 1
+            id: req.params.id
         },
         select: {
             id: true
@@ -100,11 +101,11 @@ exports.modifyArticle = async(req, res, next) => {
 
     const changeArticle = await prisma.article.update({
         where: {
-            id: req.params.id  // 1
+            id: req.params.id
         },
         data: {
-            title: req.body.title, // 'Changement titre'
-            description: req.boby.description // 'Changement description' 
+            title: req.body.title,
+            description: req.boby.description
         }
     })
     res.json(changeArticle)
@@ -115,7 +116,7 @@ exports.modifyArticle = async(req, res, next) => {
 exports.deleteArticle = async(req, res, next) => {
     const articleExists = await prisma.article.findUnique({
         where: {
-            id: req.params.id // 2
+            id: req.params.id
         },
         select: {
             id: true
@@ -128,7 +129,7 @@ exports.deleteArticle = async(req, res, next) => {
 
     const deleteOneArticle = await prisma.article.delete({
         where: {
-            id: req.params.id // 2
+            id: req.params.id
         }
     })
     res.json(deleteOneArticle)

@@ -9,10 +9,9 @@ const DeleteAccount = () => {
     const handleDelete = (e) => {
         e.preventDefault();
         
-        //const userToken = localStorage.getItem('userToken');
         const userId = localStorage.getItem('userId');
+        const token = localStorage.getItem('userToken');
 
-        const token = localStorage.getItem('userToken'); 
         const options = {
             headers: {
                 'Accept': 'multipart/form-data',
@@ -20,14 +19,13 @@ const DeleteAccount = () => {
             }
         }
 
-        axios.delete('http://localhost:5500/api/users/'+userId, options)
+        axios.delete('http://localhost:5500/api/users/'+ userId, options)
             .then(function (response){
                 console.log(response)
                 localStorage.clear();
                 alert('Le compte a bien été supprimé')
                 navigate('/');
             })
-    
     }
 
     return(
@@ -43,9 +41,7 @@ const DeleteAccount = () => {
             </div>
         </div>
         </div>
-        
     )
-
-}
+};
 
 export default DeleteAccount;

@@ -92,12 +92,8 @@ function NewMessage(){
                         </form>
                     </div>
                 </div>
-                
         </>
     )
 };
 
-
 export default NewMessage;
-
-// Trouver comment mettre l'input file en élément non-contrôlé 

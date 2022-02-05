@@ -18,6 +18,7 @@ const Profil = () => {
     const handleChange = (e) =>{
         e.preventDefault();
 
+        // Fonction générale pour valider les input
         const validInput = function (inputField, inputValue, regex, invalidMessage) {
             const small = inputField.nextElementSibling;
 
@@ -72,7 +73,6 @@ const Profil = () => {
                     navigate('/messages')
                 })
         }
-
     }
 
     return(
@@ -100,7 +100,6 @@ const Profil = () => {
                         </div>
                     </form>
                 </div>
-                
             </div>
         </div>
     )

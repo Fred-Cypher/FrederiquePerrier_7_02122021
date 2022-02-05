@@ -3,6 +3,7 @@ import axios from "axios";
 export function errorInterceptor(){
     axios.interceptors.response.use(null, (error) => {
         const { response } = error;
+        
         if(!response){
             console.error(error);
             return
@@ -18,7 +19,7 @@ export function errorInterceptor(){
     }
     
     );
-}
+};
 
 export function jwInterceptor(){
     /*axios.interceptors.request.use(request => {
@@ -38,4 +39,4 @@ export function jwInterceptor(){
         }
         return request
     });
-}
+};
