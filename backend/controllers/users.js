@@ -48,7 +48,7 @@ exports.signup = async function signup(req, res, next){
 
     // Vérification que tous les chmaps sont remplis
     if(!first_name || !last_name || !email || !password){
-        return res.status(400).json({ message : 'Champs non remplis'})
+        return res.status(400).json({ message: 'Champs non remplis'})
     } 
     
     try{
@@ -91,7 +91,7 @@ exports.signup = async function signup(req, res, next){
     }
 };
 
-// Connection d'un utilisateur 
+// Connexion d'un utilisateur 
 
 exports.login = async function login(req, res, next){
 

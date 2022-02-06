@@ -3,30 +3,56 @@ const prisma = new PrismaClient();
 const fs = require('fs'); // File system de Node pour interagir avec le système de fichiers du serveur
 
 
-// Afficher tous les messages 
+// Récupérer tous les messages 
 
 exports.getAllMessages = async function allMessages(req, res, next){
     const allMessages = await prisma.message.findMany()
     res.send(JSON.stringify({"status": 200, "error": null, 'response': allMessages}));
 };
 
-// Afficher un seul message 
+// Récupérer un seul message 
 
 exports.getOneMessage = async function oneMessage(req, res, next){
-    const oneMessage = await prisma.message.findUnique({
+
+    let messageId = parseInt(req.params.id)
+
+    if(!messageId){
+        return res.status(400).json({ message: 'Ce message n\'existe pas'})
+    }
+
+    try{
+        const message = await prisma.message.findUnique({
         where: {
-            id : Number(req.params.id) // 1 
+            id : Number(req.params.id) 
         }
     })
-    res.send(JSON.stringify({"status": 200, "error": null, "response": oneMessage}));
+
+    if ( message === null){
+        return res.status(404).json({ message: 'Ce message n\'existe pas' })
+    }
+
+    return res.json({ data : message})
+    }
+    catch(err){
+        return res.status(500).json({ message: 'Erreur lors de la connexion à la base de données'})
+    }
+    
 };
 
-// Afficher les messages d'un seul utilisateur
+// Récupérer les messages d'un seul utilisateur
 
 exports.getMessageByUser = async(req, res, next) => {
-    const userMessages = await prisma.message.findMany({
+
+    let userId = parseInt(req.params.id)
+
+    if(!userId){
+        return res.status(400).json({ message: 'Cet utilisateur n\'existe pas'})
+    }
+
+    try{
+        const userMessages = await prisma.message.findMany({
         where: {
-            user_id : Number(req.params.id) // 5
+            user_id : Number(req.params.id)
         }, select:{
             title: true,
             created_at: true,
@@ -35,56 +61,60 @@ exports.getMessageByUser = async(req, res, next) => {
         }
     })
     res.json(userMessages)
+    }
+    catch(err){
+        return res.status(500).json({ message: 'Erreur lors de la connexion à la base de données'})
+    }
+    
+    
 };
 
 // Créer un message
 
 exports.createMessage = async function createMessage(req, res, next){
-    console.log('req.body.title', req.body.title);
+    /*console.log('req.body.title', req.body.title);
     console.log('req.body.description', req.body.description);
-    console.log('req.body', req.body);
+    console.log('req.body', req.body);*/
+
+    const { title, description, user_id, image_url } = req.body;
+
+    //const image_url = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+
+    console.log(req.body)
+
+    /*if(!title || !description || !image_url ){
+        return res.status(400).json({ message: 'Champs non remplis'})
+    }*/
 
     try{
         const userExists = await prisma.user.findUnique({
             where: {
-                id: Number(req.params.id)
-            }, select: {
-                id: true,
-                title: true,
-                description: true,
-                user_id: true,
-                image_url: true
+                id: Number(user_id)
             }
         })
 
+        console.log('user exists : ', userExists)
+
         if(!userExists){
-            res.send(JSON.stringify({"status": 404, "error": 'Cet utilisateur n\'existe pas', "token": null}));
+            res.send(JSON.stringify({"status": 404, "error": 'L\'utilisateur n\'existe pas', "token": null}));
             return;
         }
 
-        try{
-            const message = await prisma.message.create({
-                data: {
-                    title: req.body.title,
-                    image_url: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-                    description: req.boby.description, 
-                    user: {
-                        connect: {
-                            id:   user_id
-                        }
-                    }
+        const message = await prisma.message.create({
+            data: {
+                title: title,
+                image_url: image_url,
+                description: description, 
+                user_id: user_id
                 }
-            })
-            console.log('const message du back', message)
-            res.send(JSON.stringify({ 'status': 200, 'error': null, 'response': message.id}))
-        }
-        catch(e){
-            res.send(JSON.stringify({"status" : 400, "error": 'Erreur lors de l\'enregistrement de l\'image', 'token': null}))
-        }
+            }
+        )
+        
+        console.log('const message du back', message)
+        res.send(JSON.stringify({ 'status': 200, 'error': null, 'response': message}))
     }
-    
     catch(e){
-        res.send(JSON.stringify({"status" : 500, "error": 'Impossible de récupérer les données', 'token': null}))
+        res.send(JSON.stringify({"status" : 400, "error": 'Erreur lors de l\'enregistrement de l\'image', 'token': null}))
     }
 };
 
@@ -92,6 +122,11 @@ exports.createMessage = async function createMessage(req, res, next){
 // Modifier un message
 
 exports.modifyMessage = async(req, res, next) => {
+
+    let messageId = parseInt(req.params.id);
+
+
+
     const messageExists = await prisma.message.findUnique({
         where: {
             id: Number(req.params.id) // 1

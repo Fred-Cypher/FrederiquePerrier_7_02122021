@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Header from "../components/Header";
-import '../style/signup.css';
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 

@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import HeaderMessages from "../components/HeaderMessages";
+import axios from "axios";
 
 function NewMessage(){
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
     const [description, setDescription] =  useState('');
-    const [picture, setPicture] = useState(null);
+    const [picture, setPicture] = useState('');
 
     console.log('title ', title)
     console.log('description ', description)
@@ -17,48 +18,30 @@ function NewMessage(){
         e.preventDefault();
 
         if (title && description && picture){
-            const userId = localStorage.getItem('userId')
+            const userId = parseInt(localStorage.getItem('userId'));
 
-            let message = {
+            console.log('user id : ', userId)
+
+            const message = {
                 title: title,
                 user_id: userId,
                 description: description,
-                image_url: picture.name
+                image_url: picture
             }
 
-            console.log('message ', message)
-
-            const token = localStorage.getItem('userToken');
-
-            console.log('token 1 ', token)
-
-            let fetchMessage = {
-                method: 'POST',
-                body: JSON.stringify(message),
-                headers: {
-                    'Accept': 'multipart/form-data',
-                    'Authorization': 'Bearer ' + token
-                }
-            }
+            console.log('message : ', message)
             
-            console.log('fecth 1 ', fetchMessage)
 
-            fetch('http://localhost:5500/api/messages', fetchMessage)
-                .then(response => response.json())
+            axios.put('http://localhost:5500/api/messages', message)
+                .then(function (response) {
+                    console.log('response : ', response);
+                })
                 .then(() => {
-                    console.log('titre : ', message.title)
-                    console.log('userID: ', message.user_id)
-                    console.log('description : ', message.description)
-                    console.log('image : ', picture.name)
-                    console.log('fetchmessage then :', fetchMessage)
-                    console.log(token) 
                     navigate("/messages")
-                    //alert('')
-                    
-                }) 
-                .catch((err) => { 
-                    console.log(err);
-                });
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
         }
     }
 
@@ -81,9 +64,14 @@ function NewMessage(){
                             </div>
                             <div className="form-group mt-3">
                                 <label htmlFor='picture' className="form-label">Image : </label>
+                                <small className="form-text"> Enregistrez le lien vers l'image souhaitée</small>
+                                <input type='text' name='picture' id='picture' className="form-control" onChange={(e) => setPicture(e.target.value)} value={ picture } /> 
+                            </div>
+                            {/*<div className="form-group mt-3">
+                                <label htmlFor='picture' className="form-label">Image : </label>
                                 <small className="form-text"> Seul les formats .gif, .png et .jpg sont autorisés</small>
                                 <input type='file' name='picture' accept=".jpg, .jpeg, .png, .gif" id='picture' className="form-control" onChange={(e) => setPicture(e.target.files[0])}  /> 
-                            </div>
+                            </div>*/}
                             <div className="row flex-row mt-3">
                                 <div className="d-flex justify-content-center">
                                     <button type='submit' className="btn mt-3 rounded border">Enregistrer</button>

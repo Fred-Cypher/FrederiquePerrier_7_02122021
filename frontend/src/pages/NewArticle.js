@@ -1,7 +1,7 @@
 import React, { useState} from "react";
 import HeaderMessages from "../components/HeaderMessages";
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";
 
 const NewArticle = () => {
     const navigate = useNavigate();
@@ -17,38 +17,28 @@ const NewArticle = () => {
         e.preventDefault();
 
         if(title && summary && content){
-            const userId = localStorage.getItem('userId')
+            const userId = parseInt(localStorage.getItem('userId'));
 
-            let article = {
-                title : title,
-                summary : summary,
-                content : content,
-                user_id : userId
+            console.log('user id : ', userId)
+
+            const article = {
+                title: title,
+                summary: summary,
+                content: content,
+                user_id: userId
             }
 
-            console.log('contenu article : ', article);
+            console.log('article : ', article);
 
-            const token = localStorage.getItem('userToken');
-
-            console.log('token : ', token);
-
-            let fetchArticle = {
-                method : 'POST',
-                body: JSON.stringify(article),
-                headers: {
-                    'Authorization': 'Bearer ' + token
-                }
-            }
-
-            console.log('fetchArticle : ', fetchArticle)
-
-            fetch('http://localhost:5500/api/articles', fetchArticle)
-                .then(response => response.json())
+            axios.put('http://localhost:5500/api/articles', article)
+                .then(function (response) {
+                    console.log('response : ', response);
+                })
                 .then(() => {
-                    navigate('/articles')
-                    })
-                .catch((err) => {
-                    console.log(err);
+                    navigate("/messages")
+                })
+                .catch((err) =>{
+                    console.log(err)
                 });
         }
     }
