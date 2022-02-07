@@ -232,18 +232,3 @@ exports.modifyUser = async(req, res, next) => {
         return res.status(500).json({ message: 'Erreur lors de la connexion à la base de donnée' })
     }
 };
-
-// Création du refreshToken
-exports.refresh = async(req, res, next) => {
-    const refresToken = jwt.sign({
-        userId: user.id,
-        email: user.email,
-        first_name: user.first_name,
-        last_name: user.last_name
-    },
-        process.env.TOKEN_REFRESH, 
-        { expiresIn: '1h' }
-    );
-
-    return refresToken
-};

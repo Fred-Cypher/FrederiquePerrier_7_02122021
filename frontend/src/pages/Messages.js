@@ -7,41 +7,54 @@ import axios from "axios";
 const Messages = () => {
     const [messages, setMessages] = useState([]);
 
-    useEffect(() => {
-        const token = localStorage.getItem('userToken'); 
-        const options = {
-            headers: {
-                'Accept': 'multipart/form-data',
-                'Authorization': 'Bearer ' + token
+    /*useEffect(() => {
+        const fetchData = async () => {
+            try{
+                const result = await axios.get('http://localhost:5500/api/messages',);
+                setMessages(result.data)
+                console.log('updated')
             }
-        }
-
-        axios.get('http://localhost:5500/api/messages', options)
-            .then(response => setMessages(response.data))
-            .catch(error => { 
+            catch(error){ 
                 console.log(error)
-            });
-    }, []);
-    
-    if(!messages) return null;
+            }
+            
+        };
+        fetchData();  
+        console.log('mounted')
+    }, []);*/
+
+    useEffect(() => {
+        axios.get('http://localhost:5500/api/messages')
+            .then(response => setMessages(response.data))
+            .catch(error => console.log(error))
+        }, []);
+        
+    if(!messages) return 'Rien à afficher';
+
+    console.log('messages : ', messages);
+
+    const messagesData = messages.response;
+
+    console.log('messages data : ', messagesData)
 
     return(
-        <div>
+        <>
             <HeaderMessages />
             <div className="m-4">Affichage des images  <br /> </div>
-            {/*<div className="card" key={messages.id}>
-                {messages.map((message) => {
-                    return(
-                        <li>
-                            <div>{message.title}</div>
-                            <div>{message.description}</div>
-                            <div>{message.user} <span>{message.created_at}</span></div>
-                            <img src={message.image_url} alt={message.title} />
-                        </li>
-                    )
-                })}
-            </div>*/}
-        </div>
+            {messagesData.map((message) =>
+                <div key={message.id} className="d-flex flex-column d-flex align-items-center">
+                    <div className="card pb-3 pt-3 mb-3 col-md-8 d-flex align-items-center">
+                        <div  className="mb-2">
+                            <div className="card-body">
+                                <div className="card-title h3 mb-2">{message.title}</div>
+                                <div className="card-subtitle mb-1">{message.description}</div>
+                                <img src={message.image_url} alt={message.title} className="card-img-bottom img-fluid"></img>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </>
         )
 };
 
@@ -49,15 +62,3 @@ export default Messages;
 
 
 //map sur data : messages
-
-/*function MessageDisplay({ title, user, image_url, description, created_at }){
-    return(
-        <li>
-            <div>{title}</div>
-            <div>{description}</div>
-            <div>{user} <span>{created_at}</span></div>
-            <img src={image_url} alt={title} />
-        </li>
-
-    )
-}; */

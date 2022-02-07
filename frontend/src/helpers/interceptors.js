@@ -10,7 +10,8 @@ export function errorInterceptor(){
         }
 
         if([401, 403].includes(response.status)){
-            localStorage.clear();
+            localStorage.removeItem('userToken'); 
+            localStorage.removeItem('refreshToken');
             window.location.href = '/'
         }
 
@@ -32,7 +33,7 @@ export function jwInterceptor(){
     });*/
     axios.interceptors.request.use(request => {
         const token = localStorage.getItem('userToken');
-        const isLoggedIn = token;
+        const isLoggedIn = !!token;
 
         if(isLoggedIn){
         request.headers.common.Authorization = `Bearer ${token}`;

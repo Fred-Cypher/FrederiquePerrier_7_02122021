@@ -25,6 +25,9 @@ function HeaderMessages(){
                         <Link to='/messages' className="nav-link">Accueil forum</Link>
                     </li>
                     <li className="nav-item">
+                        <Link to='/articles' className="nav-link">Afficher les articles</Link>
+                    </li>
+                    <li className="nav-item">
                         <Link to='/profil' className="nav-link">Modifier mon profil</Link>
                     </li>
                     <li className="nav-item">
