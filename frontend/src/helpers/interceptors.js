@@ -37,7 +37,12 @@ export function jwInterceptor(){
 
         if(token.exp < currentDate.getTime()){
             if(currentDate.getTime() < token.exp+(5*60)){
-
+                axios.get('http://localhost:5500/api/users/refresh')
+                    .then(response => 
+                        localStorage.setItem('refreshToken', response.data.refreshToken)
+                    )
+                    let token = localStorage.getItem('refreshToken');
+                    console.log(token)
             } else {
                 localStorage.removeItem('userToken');
                 localStorage.removeItem('refresToken')
