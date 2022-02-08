@@ -1,6 +1,6 @@
 import axios from "axios";
-import jwt_decode from 'jwt-decode';
-import { useNavigate } from "react-router-dom";
+//import jwt_decode from 'jwt-decode';
+//import { useNavigate } from "react-router-dom";
 
 export function errorInterceptor(){
     axios.interceptors.response.use(null, (error) => {
@@ -23,7 +23,7 @@ export function errorInterceptor(){
 );
 };
 
-export function jwInterceptor(){
+/*export function jwInterceptor(){
     axios.interceptors.request.use(request => {
         const navigate = useNavigate();
 
@@ -46,8 +46,8 @@ export function jwInterceptor(){
             } else {
                 localStorage.removeItem('userToken');
                 localStorage.removeItem('refresToken')
-            navigate('/');
-        }
+                navigate('/');
+            }
         }
 
         if (token){
@@ -58,4 +58,4 @@ export function jwInterceptor(){
 
         return request
     });
-};
+};*/

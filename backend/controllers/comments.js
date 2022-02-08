@@ -1,6 +1,8 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
+/*********** À MODIFIER SUIVANT LE MÊME MODÈLE QUE LES ARTICLES *******************/
+
 // Enregistrer un commentaire OK
 
 exports.createComment = async(req, res, next) => {
@@ -32,7 +34,7 @@ exports.getCommentsByMessage = async(req, res, next) => {
             commentary: true,
             created_at: true
         }
-        })
+    })
     res.json(messageComments)
 };
 

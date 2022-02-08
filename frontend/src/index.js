@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import './style/index.css';
 import App from './components/App';
 import { BrowserRouter } from 'react-router-dom';
-import { jwInterceptor, errorInterceptor } from './helpers/interceptors';
+import { /*jwtInterceptor,*/ errorInterceptor } from './helpers/interceptors';
 
-jwInterceptor();
+//jwtInterceptor();
 errorInterceptor();
 
 ReactDOM.render(

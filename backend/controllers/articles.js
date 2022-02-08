@@ -12,13 +12,14 @@ exports.getAllArticles = async function getAllArticles(req, res, next){
 // Récupérer un seul article 
 
 exports.getOneArticle = async function oneArticle(req, res, next){
-
+    // Vérification de la présence de l'id et de la forme de l'id de l'article
     let articleId = parseInt(req.params.id)
 
     if(!articleId){
         return res.status(400).json({ message: 'Cet article n\'existe pas'})
     }
 
+    // Récupération de l'article dans la BDD 
     try{
         const oneArticle = await prisma.article.findUnique({
             where: {
@@ -37,13 +38,13 @@ exports.getOneArticle = async function oneArticle(req, res, next){
     }
 };
 
-// Récupérer les articles d'un seul utilisateur
+// Récupérer les articles d'un seul utilisateur : à revoir
 
 exports.getArticleByUser = async(req, res, next) => {
     const userArticles = await prisma.article.findMany({
         where: {
             user_id : Number(req.params.id)
-        }, select:{
+        }, select: {
             title: true,
             created_at: true,
             image_url: true,
@@ -56,28 +57,23 @@ exports.getArticleByUser = async(req, res, next) => {
 // Créer un article
 
 exports.createArticle = async function createArticle(req, res, next){
-    /*console.log('req.body.title', req.body.title);
-    console.log('req.body.description', req.body.description);
-    console.log('req.body', req.body);*/
 
     const { title, summary, content, user_id } = req.body;
 
-    console.log(req.body)
-
     try{
+        // Vérification de la présence de l'utilisateur dans la BDD
         const userExists = await prisma.user.findUnique({
             where: {
                 id: Number(user_id)
             }
         })
 
-        console.log('user exist : ', userExists)
-
         if(!userExists){
             res.send(JSON.stringify({"status": 404, "error": 'Cet utilisateur n\'existe pas', "token": null}));
             return;
         }
 
+        // Création et ajout de l'article dans la BDD
         const article = await prisma.article.create({
             data: {
                 title: title,
@@ -99,28 +95,32 @@ exports.createArticle = async function createArticle(req, res, next){
 // Modifier un article
 
 exports.modifyArticle = async(req, res, next) => {
-
+    // Vérification de la présence de l'id et de la forme de l'id de l'article
     let articleId = parseInt(req.params.id);
 
     if(!articleId){
         return res.status(400).json({ message: 'Paramètres inconnus'})
     }
 
+    // Modification de l'article dans la BDD
     try{
+        // Recherche de l'article dans la BDD
         const article = await prisma.article.findUnique({
-        where: {
-            id: Number(req.params.id)
-        },
-        select: {
-            title : true,
-            summary: true,
-            content: true
-        }
-    }) 
+            where: {
+                id: Number(req.params.id)
+            },
+            select: {
+                title : true,
+                summary: true,
+                content: true
+            }
+        })
 
         if(!article){
             return res.status(400).json({ message : 'Cet article n\'existe pas' })
         }
+
+        // Modification de l'article
         const modifiedArticle = await prisma.article.update({
             where: {
                 id: Number(req.params.id)
@@ -136,13 +136,12 @@ exports.modifyArticle = async(req, res, next) => {
     catch(err){
         return res.status(500).json({ message: 'Erreur lors de la connexion à la base de données' })
     }
-
-    
 };
 
 // Supprimer un article
 
 exports.deleteArticle = async(req, res, next) => {
+    // Vérification de la présence de l'article dans la BDD
     const articleExists = await prisma.article.findUnique({
         where: {
             id: Number(req.params.id)
@@ -156,6 +155,7 @@ exports.deleteArticle = async(req, res, next) => {
         return res.status(400).json({ message : 'Cet article n\'existe pas' })
     }
 
+    // Suppression de l'article dans la BDD
     const deleteOneArticle = await prisma.article.delete({
         where: {
             id: Number(req.params.id)

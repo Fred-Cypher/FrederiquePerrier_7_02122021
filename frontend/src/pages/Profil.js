@@ -9,11 +9,7 @@ const Profil = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const userToken = localStorage.getItem('userToken');
     const userId = localStorage.getItem('userId');
-
-    console.log(userToken);
-    console.log(userId);
 
     const handleChange = (e) =>{
         e.preventDefault();
@@ -51,9 +47,6 @@ const Profil = () => {
         const validEmail = validInput(emailInput, email, emailRegex, emailInvalid);
         const validpassword = validInput(passwordInput, password, passwordRegex, passwordInvalid);
 
-        console.log('validEmail', validEmail);
-        console.log('validPassword', validpassword);
-
         if(validEmail && validpassword){
             const token = localStorage.getItem('userToken'); 
             const options = {
@@ -62,6 +55,7 @@ const Profil = () => {
                     'Authorization': 'Bearer ' + token
                 }
             }
+            
             const user = {
                     email: email,
                     password: password

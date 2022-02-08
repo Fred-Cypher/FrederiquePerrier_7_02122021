@@ -9,6 +9,7 @@ function HeaderMessages(){
     const navigate = useNavigate();
 
     const handleClick = () =>{
+        // Suppression des token lors de la déconnexion
         localStorage.removeItem('userToken');
         localStorage.removeItem('refresToken')
         navigate('/');

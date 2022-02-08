@@ -7,7 +7,7 @@ const userCtrl = require('../controllers/users');
 
 router.get('/', checkToken, userCtrl.allUsers);
 router.get('/:id', checkToken, userCtrl.onUser);
-router.get('/refresh', checkToken, userCtrl.refreshToken);
+//router.get('/refresh', userCtrl.refreshToken);
 router.put('/signup', userCtrl.signup);
 router.post('/login', userCtrl.login);
 router.delete('/:id', checkToken, userCtrl.delete);

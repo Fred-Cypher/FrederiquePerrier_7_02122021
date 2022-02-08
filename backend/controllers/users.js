@@ -125,30 +125,25 @@ exports.login = async function login(req, res, next){
         } else {
             try{
             // Vérification du mot de passe
-            const valid = await bcrypt.compare(password, user.password) 
+                const valid = await bcrypt.compare(password, user.password) 
 
-            console.log('valid : ', valid);
-            console.log('req.body.password : ', password);
-            console.log('user.password : ', user.password);
-            console.log('user.id : ', user.id)
+                if(!valid){
+                    res.send(JSON.stringify({"status" : 401, "error": 'Mot de passe incorrect', 'token': null}))
+                    return;
+                }
 
-            if(!valid){
-                res.send(JSON.stringify({"status" : 401, "error": 'Mot de passe incorrect', 'token': null}))
-                return;
-            }
-
-            // Création du token de connexion 
-            const token = jwt.sign({
-                userId: user.id,
-                email: user.email,
-                first_name: user.first_name,
-                last_name: user.last_name
-            },
-                process.env.TOKEN, 
-                { expiresIn: '1h' }
-            );
-            console.log('token connexion : ', token)
-            res.send(JSON.stringify({"status": 200, "error": null, "token": token, "user": user }))
+                // Création du token de connexion 
+                const token = jwt.sign({
+                    userId: user.id,
+                    email: user.email,
+                    first_name: user.first_name,
+                    last_name: user.last_name
+                },
+                    process.env.TOKEN, 
+                    { expiresIn: '1h' }
+                );
+                console.log('token connexion : ', token)
+                res.send(JSON.stringify({"status": 200, "error": null, "token": token, "user": user }))
             }
             catch(e){
                 res.send(JSON.stringify({"status" : 500, "error": 'Problème lors de l\'authentification', 'token': null}))
@@ -163,38 +158,21 @@ exports.login = async function login(req, res, next){
 
 exports.refreshToken = async(req, res, next) =>{
     try{
-        //  Recherche de l'utilisateur dans la BDD par son adresse email
-        const user = await prisma.user.findUnique({
-            where: {
-                email: String(email)
-            },
-            select: {
-                id: true,
-                first_name: true,
-                last_name: true,
-                email: true,
-                password: true
-            }
-        });
-
-        console.log('userRefresh : ', user);
-
         // Création du token de connexion 
         const refreshToken = jwt.sign({
-            userId: user.id,
-            email: user.email,
-            first_name: user.first_name,
-            last_name: user.last_name
+            userId: req.params.id,
+            email: req.params.email,
+            first_name: req.params.first_name,
+            last_name: req.params.last_name
         },
             process.env.TOKEN_REFRESH, 
             { expiresIn: '1h' }
         );
-        console.log('token refresh: ', refreshToken)
-        res.json(refreshToken)
-        }
-        catch(e){
-            res.send(JSON.stringify({"status" : 500, "error": 'Problème lors de l\'authentification', 'token': null}))
-        }
+        res.send(JSON.stringify({"status": 200, "error": null, "refreshToken": refreshToken, "user": user }))
+    }
+    catch(e){
+        res.send(JSON.stringify({"status" : 500, "error": 'Problème lors de l\'authentification', 'token': null}))
+    }
 };
 
 // Suppression définitive d'un utilisateur 

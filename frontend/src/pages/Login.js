@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Login = () =>{
-    localStorage.clear();
+    localStorage.removeItem('token');
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -53,15 +53,11 @@ const Login = () =>{
                 headers : { 
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer token'
-                }};
-            console.log('user : ', user);
-            console.log('options : ', options);
+                }
+            };
 
             axios.post('http://localhost:5500/api/users/login', user, options)
                 .then(response => {
-                    console.log('response : ', response)
-                    console.log('response.email : ', response.data.user.email)
-                    console.log('response.token : ', response.data.token)
                     if(email === response.data.user.email){
                         console.log('OK')
                         localStorage.setItem('userToken', response.data.token);
@@ -70,7 +66,7 @@ const Login = () =>{
                         alert ('Vous allez être redirigé sur le forum de partage d\'images')
                     } else {
                         console.log('Ça ne fonctionne pas :( ')
-                        return 'Erreur lors de la connection, veuillez recommencer'
+                        alert ('Erreur lors de la connexion, veuillez recommencer')
                     }
                 })
                 .catch((err) => {

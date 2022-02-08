@@ -9,17 +9,11 @@ const NewArticle = () => {
     const [summary, setSummary] = useState('');
     const [content, setContent] = useState('');
 
-    console.log('titre : ', title);
-    console.log('résumé : ', summary);
-    console.log('article : ', content);
-
     const handleSubmit = (e) => {
         e.preventDefault();
 
         if(title && summary && content){
             const userId = parseInt(localStorage.getItem('userId'));
-
-            console.log('user id : ', userId)
 
             const article = {
                 title: title,
@@ -27,10 +21,16 @@ const NewArticle = () => {
                 content: content,
                 user_id: userId
             }
+            const token = localStorage.getItem('userToken'); 
+            
+            const options = {
+                headers: {
+                    'Accept': 'multipart/form-data',
+                    'Authorization': 'Bearer ' + token
+                }
+            };
 
-            console.log('article : ', article);
-
-            axios.put('http://localhost:5500/api/articles', article)
+            axios.put('http://localhost:5500/api/articles', article, options)
                 .then(function (response) {
                     console.log('response : ', response);
                 })
@@ -61,8 +61,7 @@ const NewArticle = () => {
                         </div>
                         <div className="form-group mt-3">
                             <label htmlFor='content' className="form-label">Article : </label>
-                            <small className="form-text"> Limité à 2000 caractères</small>
-                            <textarea type='text' name='content' id='content' maxLength={2000} className="form-control" placeholder="Entrez le texte de votre article..." onChange={(e) => setContent(e.target.value)} value = { content }/> 
+                            <textarea type='text' name='content' id='content' className="form-control" placeholder="Entrez le texte de votre article..." onChange={(e) => setContent(e.target.value)} value = { content }/> 
                         </div>
                         <div className="row flex-row mt-3">
                             <div className="d-flex justify-content-center">

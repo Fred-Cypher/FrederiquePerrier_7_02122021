@@ -1,33 +1,25 @@
 import React from "react";
 import HeaderMessages from "../components/HeaderMessages";
-//import axios from "axios";
+import axios from "axios";
+import { useEffect, useState } from "react";
 //import MessageDisplay from "../components/MessageDisplay";
 //import Commentary from "./Commentaries";
 
 const Messages = () => {
-    /*const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState([]);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try{
-                const result = await axios.get('http://localhost:5500/api/messages',);
-                setMessages(result.data)
-                console.log('updated')
-            }
-            catch(error){ 
-                console.log(error)
-            }
-            
-        };
-        fetchData();  
-        console.log('mounted')
-    }, []);
+        const token = localStorage.getItem('userToken'); 
+        const options = {
+            headers: {
+                'Accept': 'multipart/form-data',
+                'Authorization': 'Bearer ' + token}
+        }
 
-    useEffect(() => {
-        axios.get('http://localhost:5500/api/messages')
+        axios.get('http://localhost:5500/api/messages', options)
             .then(response => setMessages(response.data))
             .catch(error => console.log(error))
-        }, []);
+    }, []);
         
     if(!messages) return 'Rien à afficher';
 
@@ -35,13 +27,14 @@ const Messages = () => {
 
     const messagesData = messages.response;
 
-    console.log('messages data : ', messagesData)*/
+    console.log('messages data : ', messagesData)
 
     return(
         <>
             <HeaderMessages />
-            <div className="m-4">Affichage des images  <br /> </div>
-            {/*messagesData.map((message) =>
+            <div className="m-4 text-center">Derniers messages<br /> </div>
+            {/* Essai pour l'affichage des messages de la BDD, à revoir
+            messagesData.map((message) =>
                 <div key={message.id} className="d-flex flex-column d-flex align-items-center">
                     <div className="card pb-3 pt-3 mb-3 col-md-8 d-flex align-items-center">
                         <div  className="mb-2">
@@ -54,11 +47,22 @@ const Messages = () => {
                     </div>
                 </div>
             )*/}
+
+            {/***** Message exemple pour donner un aperçu de ce que sera la page quand elle sera fonctionnelle  ********/}
+
+            <div className="d-flex flex-column d-flex align-items-center">
+                <div className="card pb-3 pt-3 mb-3 col-md-8 d-flex align-items-center">
+                    <div  className="mb-2">
+                        <div className="card-body">
+                            <div className="card-title h3 mb-2">Lit</div>
+                            <div className="card-subtitle mb-1">Le lit vu par Minou</div>
+                            <img src="https://i.pinimg.com/564x/2b/9b/fe/2b9bfe7084162d9c84c6622923c7c548.jpg" alt="Le lit vu par un chat" className="card-img-bottom img-fluid"></img>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </>
-        )
+    )
 };
 
 export default Messages;
-
-
-//map sur data : messages
