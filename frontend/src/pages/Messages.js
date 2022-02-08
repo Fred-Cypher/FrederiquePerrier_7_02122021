@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import HeaderMessages from "../components/HeaderMessages";
-import axios from "axios";
+//import axios from "axios";
 //import MessageDisplay from "../components/MessageDisplay";
 //import Commentary from "./Commentaries";
 
 const Messages = () => {
-    const [messages, setMessages] = useState([]);
+    /*const [messages, setMessages] = useState([]);
 
-    /*useEffect(() => {
+    useEffect(() => {
         const fetchData = async () => {
             try{
                 const result = await axios.get('http://localhost:5500/api/messages',);
@@ -21,7 +21,7 @@ const Messages = () => {
         };
         fetchData();  
         console.log('mounted')
-    }, []);*/
+    }, []);
 
     useEffect(() => {
         axios.get('http://localhost:5500/api/messages')
@@ -35,13 +35,13 @@ const Messages = () => {
 
     const messagesData = messages.response;
 
-    console.log('messages data : ', messagesData)
+    console.log('messages data : ', messagesData)*/
 
     return(
         <>
             <HeaderMessages />
             <div className="m-4">Affichage des images  <br /> </div>
-            {messagesData.map((message) =>
+            {/*messagesData.map((message) =>
                 <div key={message.id} className="d-flex flex-column d-flex align-items-center">
                     <div className="card pb-3 pt-3 mb-3 col-md-8 d-flex align-items-center">
                         <div  className="mb-2">
@@ -53,7 +53,7 @@ const Messages = () => {
                         </div>
                     </div>
                 </div>
-            )}
+            )*/}
         </>
         )
 };

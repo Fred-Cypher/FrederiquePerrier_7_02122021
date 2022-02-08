@@ -2,14 +2,15 @@ import React from "react";
 import logo from '../images/icon-left-font-monochrome-black.svg';
 import { Link } from "react-router-dom";
 import '../style/headers.css';
-import { useNavigate } from "react-router-dom";;
+import { useNavigate } from "react-router-dom";
 
 
 function HeaderMessages(){
     const navigate = useNavigate();
 
     const handleClick = () =>{
-        localStorage.clear();
+        localStorage.removeItem('userToken');
+        localStorage.removeItem('refresToken')
         navigate('/');
     };
 
