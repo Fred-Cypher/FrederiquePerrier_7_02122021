@@ -30,9 +30,23 @@ Dans un autre terminal, placez-vous dans le dossier "backend", puis tapez `npm i
 
 ## Base de données
 
-La base de données Sql est reliée grâce à l'ORM Prisma. Pour la créer sur votre serveur local, et l'ouvrir par exemple avec PhpMyAdmin, suivez les recommandations de la documentation Prisma : https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch/relational-databases/connect-your-database-node-mysql, en modifiant le fichier `.env.example` du dossier "backend" et en y remplaçant `"mysql://root:randompassword@localhost:3306/mydb"` par vos identifiants personnels, puis modifiez le nom du fichier par `.env`. Vous pouvez ensuite créer la base de données à partir de votre terminal grâce à la commande `npx prisma migrate dev --name init`, la base de données relationnelle sera désormais accessible, quand votre serveur est lancé, dans PhpMyAdmin ou directement dans Prisma Studio en tapant `npx prisma studio` dans votre terminal. 
+La base de données Sql est reliée grâce à l'ORM Prisma. Pour la créer sur votre serveur local, et l'ouvrir par exemple avec PhpMyAdmin, suivez les recommandations de la documentation Prisma : https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch/relational-databases/connect-your-database-node-mysql :
+* modifiez tout d'abord le nom du ficher `.env.example` dans le dossier backend en `.env`
+* remplacez-y `"mysql://johndoe:randompassword@localhost:5432/mydb?schema=public"` par vos identifiants personnels comme suit :
+    * `mysql://user:password@host:port/database`
+        * `user` : votre nom d'utilisateur pour la base de données
+        * `password` : votre mot de passe pour la base de données
+        * `host` : le serveur, ici normalement `localhost`
+        * `port` : le port sur lequel tourne le serveur de votre base de données (généralement 3306 pour MySQL)
+        * `database` : le nom de votre base de données
+* initialisez la base de données en tapant `npx prisma migrate dev --name init` dans votre terminal. Attention, ne modifier pas `name` pour le remplacer par le nom de votre base de données, laissez `name`, Prisma va récupérer de lui-même le nom renseigné dans l'adresse de la base de données. 
 
-Profitez d'être dans le fichier `.env` pour modifier la phrase secrète de votre choix pour le `TOKEN`. 
+Normalement, la base de données relationnelle est maintenant créée et accessible quand votre serveur est lancé.
+
+Vous pouvez accéder à la base de données depuis PhpMyAdmin par exemple, ou directement depuis votre éditeur de code en tapant `npx prisma studio` depuis votre terminal (toujours placé dans le dossier backend). 
+
+## .ENV
+Dans le fichier `.env` récemment renommé, modifiez la phrase secrète pour celle de votre choix pour le `TOKEN`. 
 
 
 ## Compétences évaluées :
