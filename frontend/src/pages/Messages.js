@@ -48,15 +48,15 @@ const Messages = () => {
                 </div>
             )*/}
 
-            {/***** Message exemple pour donner un aperçu de ce que sera la page quand elle sera fonctionnelle  ********/}
+            {/***** Message exemple pour donner un aperçu de ce que sera la page quand elle sera fonctionnelle, image libre pour usage commercial  ********/}
 
             <div className="d-flex flex-column d-flex align-items-center">
                 <div className="card pb-3 pt-3 mb-3 col-md-8 d-flex align-items-center">
                     <div  className="mb-2">
                         <div className="card-body">
-                            <div className="card-title h3 mb-2">Lit</div>
-                            <div className="card-subtitle mb-1">Le lit vu par Minou</div>
-                            <img src="https://i.pinimg.com/564x/2b/9b/fe/2b9bfe7084162d9c84c6622923c7c548.jpg" alt="Le lit vu par un chat" className="card-img-bottom img-fluid"></img>
+                            <div className="card-title h3 mb-2">Escalade</div>
+                            <div className="card-subtitle mb-1">J'y arriverai, j'y arriverai ! </div>
+                            <img src="https://cdn.pixabay.com/photo/2018/08/31/15/44/kitten-3644941_960_720.jpg" alt="Chaton escaladant l'accoudoir d'un fauteuil en osier" className="card-img-bottom img-fluid"></img>
                         </div>
                     </div>
                 </div>
