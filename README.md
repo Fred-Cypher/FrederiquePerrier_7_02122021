@@ -39,7 +39,7 @@ La base de données Sql est reliée grâce à l'ORM Prisma. Pour la créer sur v
         * `host` : le serveur, ici normalement `localhost`
         * `port` : le port sur lequel tourne le serveur de votre base de données (généralement 3306 pour MySQL)
         * `database` : le nom de votre base de données
-* initialisez la base de données en tapant `npx prisma migrate dev --name init` dans votre terminal. Attention, ne modifier pas `name` pour le remplacer par le nom de votre base de données, laissez `name`, Prisma va récupérer de lui-même le nom renseigné dans l'adresse de la base de données. 
+* initialisez la base de données en tapant `npx prisma migrate dev --name init` dans votre terminal. Attention, ne modifiez pas `name` pour le remplacer par le nom de votre base de données, laissez `name`, Prisma va récupérer de lui-même le nom renseigné dans l'adresse de la base de données. 
 
 Normalement, la base de données relationnelle est maintenant créée et accessible quand votre serveur est lancé.
 
