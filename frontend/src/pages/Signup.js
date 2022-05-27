@@ -100,7 +100,7 @@ const Signup = () => {
 
     return (
         <div>
-            <Header/>
+            <Header />
             <div className="d-flex justify-content-center">
                 <div className="card pb-3 pt-3 m-5 col-md-8 d-flex align-items-center">
                     <div className="mt-3 mb-4 h3">Inscription au réseau social de Groupomania</div>

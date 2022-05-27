@@ -6,7 +6,7 @@ import Header from "../components/Header";
 function HomePage(){
     return(
         <div className="home">
-            <Header/>
+            <Header />
             <div className="d-flex justify-content-center align-items-center mt-5">
                 <div className="col-9 card p-3 m-2 d-flex ">
                     <h1 className="col-12 p-2 text-center">Bienvenue sur le réseau social de Groupomania</h1>

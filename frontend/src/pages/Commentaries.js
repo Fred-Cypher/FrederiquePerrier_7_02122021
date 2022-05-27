@@ -14,4 +14,4 @@ export default Commentary;
 
 // Afficher les dernières images enregistrées
 // Ouvrir les commentaires ou les fermer, fermé par défaut
-// Bouton ajouter un commentaire -> envoie vers page d'enregistrement
+// Bouton ajouter un commentaire -> envoi vers page d'enregistrement

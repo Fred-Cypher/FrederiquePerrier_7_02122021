@@ -30,7 +30,7 @@ const DeleteAccount = () => {
 
     return(
         <div>
-            <HeaderMessages/>
+            <HeaderMessages />
             <div className="card pb-3 pt-3 m-5 col-8 d-flex align-items-center border-danger">
                 <div className="mt-3 mb-4 h3 text-center">Suppression du compte</div>
                 <div className="mt-3 mb-4 h4 text-center text-danger">Attention, la suppression du compte est définitive</div>

@@ -52,7 +52,7 @@ function NewMessage(){
 
     return(
         <>
-            <HeaderMessages/>
+            <HeaderMessages />
             <div className="d-flex flex-column d-flex align-items-center">
                 <div className="card pb-3 pt-3 col-md-8 d-flex align-items-center">
                     <div className="m-3 h3 text-center">Enregistrer un nouveau message : </div>
